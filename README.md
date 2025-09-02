@@ -293,6 +293,8 @@ The project includes multiple Docker configurations for different use cases:
 
 ### Docker Commands
 
+#### **Quick Start Commands**
+
 ```bash
 # Development with hot reloading
 docker-compose -f docker-compose.dev.yml up --build
@@ -308,6 +310,201 @@ docker-compose logs -f
 
 # Clean up
 docker-compose down -v --remove-orphans
+```
+
+#### **Detailed Docker Command Guide**
+
+##### **Building Images**
+
+```bash
+# Build production image
+docker build -t shrig-solutions .
+
+# Build development image
+docker build -f Dockerfile.dev -t shrig-solutions-dev .
+
+# Build with no cache (force rebuild)
+docker build --no-cache -t shrig-solutions .
+
+# Build with specific tag
+docker build -t shrig-solutions:v1.0.0 .
+```
+
+##### **Running Containers**
+
+```bash
+# Run production container
+docker run -d -p 3000:3000 --name shrig-solutions-app shrig-solutions
+
+# Run development container with volume mounting
+docker run -d -p 3000:3000 -v $(pwd):/app -v /app/node_modules --name shrig-solutions-dev shrig-solutions-dev
+
+# Run in interactive mode
+docker run -it -p 3000:3000 shrig-solutions /bin/sh
+
+# Run with environment variables
+docker run -d -p 3000:3000 -e NODE_ENV=production --name shrig-solutions-app shrig-solutions
+```
+
+##### **Docker Compose Operations**
+
+```bash
+# Start development environment
+docker-compose -f docker-compose.dev.yml up
+
+# Start production environment
+docker-compose up
+
+# Start in background (detached mode)
+docker-compose up -d
+
+# Rebuild and start
+docker-compose up --build
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes
+docker-compose down -v
+
+# View running services
+docker-compose ps
+
+# View logs for specific service
+docker-compose logs shrig-solutions-app
+
+# Follow logs in real-time
+docker-compose logs -f shrig-solutions-app
+
+# Restart specific service
+docker-compose restart shrig-solutions-app
+
+# Scale services
+docker-compose up --scale shrig-solutions-app=3
+```
+
+##### **Container Management**
+
+```bash
+# List running containers
+docker ps
+
+# List all containers (including stopped)
+docker ps -a
+
+# Stop container
+docker stop shrig-solutions-app
+
+# Start stopped container
+docker start shrig-solutions-app
+
+# Restart container
+docker restart shrig-solutions-app
+
+# Remove container
+docker rm shrig-solutions-app
+
+# Remove container and image
+docker rm -f shrig-solutions-app && docker rmi shrig-solutions
+
+# Execute command in running container
+docker exec -it shrig-solutions-app /bin/sh
+
+# Copy files from container
+docker cp shrig-solutions-app:/app/logs ./local-logs
+
+# Copy files to container
+docker cp ./config.json shrig-solutions-app:/app/
+```
+
+##### **Image Management**
+
+```bash
+# List images
+docker images
+
+# Remove image
+docker rmi shrig-solutions
+
+# Remove all unused images
+docker image prune -a
+
+# Tag image
+docker tag shrig-solutions shrig-solutions:latest
+
+# Push to registry
+docker push shrig-solutions:latest
+
+# Pull from registry
+docker pull shrig-solutions:latest
+
+# Save image to tar file
+docker save -o shrig-solutions.tar shrig-solutions
+
+# Load image from tar file
+docker load -i shrig-solutions.tar
+```
+
+##### **System Cleanup**
+
+```bash
+# Remove all stopped containers
+docker container prune
+
+# Remove all unused networks
+docker network prune
+
+# Remove all unused volumes
+docker volume prune
+
+# Remove all unused images
+docker image prune
+
+# Remove everything unused
+docker system prune -a
+
+# Show disk usage
+docker system df
+```
+
+##### **Troubleshooting Commands**
+
+```bash
+# Inspect container
+docker inspect shrig-solutions-app
+
+# View container resource usage
+docker stats shrig-solutions-app
+
+# View container logs
+docker logs shrig-solutions-app
+
+# Follow container logs
+docker logs -f shrig-solutions-app
+
+# View last 100 lines of logs
+docker logs --tail 100 shrig-solutions-app
+
+# Check container health
+docker inspect --format='{{.State.Health.Status}}' shrig-solutions-app
+```
+
+##### **Development Workflow**
+
+```bash
+# Start development environment
+docker-compose -f docker-compose.dev.yml up --build
+
+# Make code changes (hot reloading enabled)
+
+# View logs for changes
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Stop development environment
+docker-compose -f docker-compose.dev.yml down
+
+# Rebuild after dependency changes
+docker-compose -f docker-compose.dev.yml up --build --force-recreate
 ```
 
 ### Docker Benefits
