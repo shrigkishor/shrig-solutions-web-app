@@ -166,19 +166,56 @@ src/
 
 - Node.js 18+
 - pnpm
+- Docker (optional, for containerized deployment)
 
 ### Installation
 
+#### Option 1: Traditional Installation
+
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd shrig-solutions-clone
+git clone https://github.com/shrigkishor/shrig-solutions-web-app.git
+cd shrig-solutions-web-app
 
 # Install dependencies
 pnpm install
 
 # Start development server
 pnpm dev
+```
+
+#### Option 2: Docker Installation (Recommended)
+
+##### Development Mode (with hot reloading)
+
+```bash
+# Build and run in development mode
+docker-compose -f docker-compose.dev.yml up --build
+
+# Or run in background
+docker-compose -f docker-compose.dev.yml up -d --build
+```
+
+##### Production Mode
+
+```bash
+# Build and run in production mode
+docker-compose up --build
+
+# Or run in background
+docker-compose up -d --build
+```
+
+##### Using Docker directly
+
+```bash
+# Development
+docker build -f Dockerfile.dev -t shrig-solutions-dev .
+docker run -p 3000:3000 -v $(pwd):/app -v /app/node_modules shrig-solutions-dev
+
+# Production
+docker build -t shrig-solutions .
+docker run -p 3000:3000 shrig-solutions
 ```
 
 ### Build for Production
@@ -230,6 +267,57 @@ pnpm start
 - Lighthouse CI integration
 - Core Web Vitals tracking
 
+## 🐳 Docker
+
+### Docker Configuration
+
+The project includes multiple Docker configurations for different use cases:
+
+#### **Production Dockerfile**
+
+- Optimized for production deployment
+- Multi-stage build for smaller image size
+- Uses pnpm for faster dependency installation
+- Exposes port 3000
+
+#### **Development Dockerfile**
+
+- Includes development dependencies
+- Volume mounting for hot reloading
+- Faster build times for development
+
+#### **Docker Compose Files**
+
+- `docker-compose.yml`: Production setup
+- `docker-compose.dev.yml`: Development setup with hot reloading
+
+### Docker Commands
+
+```bash
+# Development with hot reloading
+docker-compose -f docker-compose.dev.yml up --build
+
+# Production build
+docker-compose up --build
+
+# Stop containers
+docker-compose down
+
+# View logs
+docker-compose logs -f
+
+# Clean up
+docker-compose down -v --remove-orphans
+```
+
+### Docker Benefits
+
+- **Consistent Environment**: Same environment across development and production
+- **Easy Deployment**: Simple deployment to any container platform
+- **Isolation**: Application runs in isolated environment
+- **Scalability**: Easy to scale horizontally
+- **Portability**: Runs anywhere Docker is supported
+
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
@@ -239,17 +327,41 @@ pnpm build
 # Deploy to Vercel with automatic CI/CD
 ```
 
-### Docker
+### Docker Deployment
 
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
+```bash
+# Build production image
+docker build -t shrig-solutions .
+
+# Run in production
+docker run -d -p 3000:3000 --name shrig-solutions-app shrig-solutions
+
+# Or use docker-compose
+docker-compose up -d
+```
+
+### Kubernetes Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shrig-solutions
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: shrig-solutions
+  template:
+    metadata:
+      labels:
+        app: shrig-solutions
+    spec:
+      containers:
+        - name: shrig-solutions
+          image: shrig-solutions:latest
+          ports:
+            - containerPort: 3000
 ```
 
 ## 🤝 Contributing
