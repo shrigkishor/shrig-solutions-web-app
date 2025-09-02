@@ -1,16 +1,19 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
   <defs>
-    <linearGradient id="avatarGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
+    <linearGradient id="gradient-SD" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#7C3AEDCC"/>
     </linearGradient>
   </defs>
-  
-  <circle cx="100" cy="100" r="100" fill="url(#avatarGradient2)"/>
-  <circle cx="100" cy="80" r="35" fill="white"/>
-  <rect x="75" y="115" width="50" height="60" rx="25" fill="white"/>
-  <circle cx="90" cy="75" r="4" fill="#374151"/>
-  <circle cx="110" cy="75" r="4" fill="#374151"/>
-  <path d="M85 90 Q100 100 115 90" stroke="#374151" stroke-width="2" fill="none"/>
-  <text x="100" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">SD</text>
+  <rect width="400" height="400" fill="url(#gradient-SD)"/>
+  <text x="200" y="200" font-family="Arial, sans-serif" font-size="120" font-weight="bold" text-anchor="middle" fill="white" dy="40">
+    SD
+  </text>
+  <text x="200" y="320" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white">
+    Suman Dhakal
+  </text>
+  <text x="200" y="350" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="white" opacity="0.8">
+    Technology
+  </text>
 </svg>

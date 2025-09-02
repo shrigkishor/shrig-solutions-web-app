@@ -1,112 +1,35 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Linkedin, Github, Users, ArrowRight, Sparkles } from "lucide-react";
+import {
+  Linkedin,
+  Github,
+  Users,
+  ArrowRight,
+  Sparkles,
+  Mail,
+} from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { TEAM_MEMBERS } from "@/constants/team";
 
 const TeamSection = () => {
   const { isDark } = useTheme();
-  const teamMembers = [
-    {
-      name: "Kishor Bhandari",
-      role: "Full Stack Engineer",
-      team: "Team08",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-blue-500 to-cyan-500",
-    },
-    {
-      name: "Suman Dhakal",
-      role: "AI/ML Engineer",
-      team: "Team09",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-purple-500 to-pink-500",
-    },
-    {
-      name: "Ashlesh Pandey",
-      role: "Mobile App Developer",
-      team: "Team07",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-green-500 to-emerald-500",
-    },
-    {
-      name: "Dipesh Thapa Magar",
-      role: "UI/UX Designer / WordPress Developer",
-      team: "Team01",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-orange-500 to-red-500",
-    },
-    {
-      name: "Arjun Karki",
-      role: "Graphics Designer",
-      team: "Team02",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-pink-500 to-rose-500",
-    },
-    {
-      name: "Subba Saheb Chaudhary",
-      role: "DevOps Engineer",
-      team: "Team03",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-indigo-500 to-blue-500",
-    },
-    {
-      name: "Utsav Shrestha",
-      role: "Mobile App Developer",
-      team: "Team04",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-teal-500 to-cyan-500",
-    },
-    {
-      name: "Suraj Paudel",
-      role: "Mobile App Developer",
-      team: "Team05",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-cyan-500 to-blue-500",
-    },
-    {
-      name: "Aman Rajbanshi",
-      role: "QA Engineer",
-      team: "Team06",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-emerald-500 to-green-500",
-    },
-    {
-      name: "Raman Karki",
-      role: "Full Stack Engineer",
-      team: "Team10",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-amber-500 to-orange-500",
-    },
-    {
-      name: "Atisha Thapa",
-      role: "Frontend Developer",
-      team: "Atisha",
-      image: "/api/placeholder/200/200",
-      linkedin: "#",
-      github: "#",
-      gradient: "from-violet-500 to-purple-500",
-    },
-  ];
+
+  // Team gradient mapping
+  const teamGradients: Record<string, string> = {
+    Leadership: "from-blue-600 to-cyan-500",
+    Technology: "from-purple-600 to-pink-500",
+    Mobile: "from-orange-600 to-red-500",
+    Design: "from-green-600 to-emerald-500",
+    Infrastructure: "from-indigo-600 to-blue-500",
+    "Quality Assurance": "from-pink-600 to-rose-500",
+    "Web Development": "from-teal-600 to-cyan-500",
+  };
+
+  const teamMembers = TEAM_MEMBERS.map((member) => ({
+    ...member,
+    gradient: teamGradients[member.team] || "from-blue-600 to-cyan-500",
+  }));
 
   return (
     <section
@@ -119,32 +42,34 @@ const TeamSection = () => {
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
-        {/* Floating particles */}
-        <div className="absolute top-20 left-10 w-2 h-2 bg-blue-400 rounded-full animate-pulse opacity-60"></div>
+        {/* Team Background Image */}
         <div
-          className="absolute top-40 right-20 w-1 h-1 bg-purple-400 rounded-full animate-pulse opacity-40"
-          style={{ animationDelay: "1s" }}
-        ></div>
-        <div
-          className="absolute bottom-20 left-1/4 w-3 h-3 bg-cyan-400 rounded-full animate-pulse opacity-80"
-          style={{ animationDelay: "2s" }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/images/team/team-background.jpg')",
+            opacity: isDark ? 0.05 : 0.02,
+          }}
         ></div>
 
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-20">
+        {/* Overlay for better text readability */}
+        <div
+          className={`absolute inset-0 ${
+            isDark
+              ? "bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95"
+              : "bg-gradient-to-br from-gray-50/98 via-white/95 to-blue-50/98"
+          }`}
+        ></div>
+
+        {/* Subtle animated elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-2 h-2 bg-blue-400 rounded-full animate-pulse opacity-30"></div>
           <div
-            className="w-full h-full"
-            style={{
-              backgroundImage: `
-                linear-gradient(${
-                  isDark ? "rgba(59,130,246,0.1)" : "rgba(59,130,246,0.05)"
-                } 1px, transparent 1px),
-                linear-gradient(90deg, ${
-                  isDark ? "rgba(59,130,246,0.1)" : "rgba(59,130,246,0.05)"
-                } 1px, transparent 1px)
-              `,
-              backgroundSize: "60px 60px",
-            }}
+            className="absolute top-40 right-20 w-1 h-1 bg-purple-400 rounded-full animate-pulse opacity-20"
+            style={{ animationDelay: "1s" }}
+          ></div>
+          <div
+            className="absolute bottom-20 left-1/4 w-3 h-3 bg-cyan-400 rounded-full animate-pulse opacity-25"
+            style={{ animationDelay: "2s" }}
           ></div>
         </div>
       </div>
@@ -163,34 +88,40 @@ const TeamSection = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-medium mb-8"
           >
             <Users className="w-4 h-4" />
             Our Team
           </motion.div>
 
           <h2
-            className={`text-5xl md:text-6xl font-bold font-poppins mb-6 transition-all duration-500 ${
+            className={`text-5xl md:text-6xl font-bold font-poppins mb-8 transition-all duration-500 ${
               isDark ? "text-white" : "text-gray-900"
             }`}
           >
-            Great teams make{" "}
+            Meet Our{" "}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              great visions
-            </span>{" "}
-            possible
+              Amazing Team
+            </span>
           </h2>
           <p
-            className={`text-xl md:text-2xl max-w-4xl mx-auto font-inter leading-relaxed transition-all duration-500 ${
+            className={`text-xl max-w-4xl mx-auto font-inter leading-relaxed transition-all duration-500 ${
               isDark ? "text-gray-300" : "text-gray-600"
             }`}
           >
-            Meet the visionaries behind our innovative solutions
+            The brilliant minds behind our innovative solutions and exceptional
+            results
           </p>
         </motion.div>
 
         {/* Team Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-20"
+        >
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.name}
@@ -201,112 +132,206 @@ const TeamSection = () => {
               className="group"
             >
               <div
-                className={`relative rounded-3xl p-8 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
+                className={`relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
                   isDark
-                    ? "bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 border border-gray-700/50"
-                    : "bg-gradient-to-br from-white via-gray-50 to-white border border-gray-100"
-                } shadow-xl hover:shadow-2xl backdrop-blur-sm`}
+                    ? "bg-gradient-to-br from-gray-800/80 via-gray-700/80 to-gray-800/80 border border-gray-700/50 backdrop-blur-sm"
+                    : "bg-gradient-to-br from-white/90 via-gray-50/90 to-white/90 border border-gray-200/50 backdrop-blur-sm"
+                } shadow-lg hover:shadow-xl`}
               >
-                {/* Team Badge */}
-                <div className="text-center mb-6">
-                  <span
-                    className={`inline-block px-4 py-2 rounded-full text-sm font-bold transition-all duration-500 ${
-                      isDark
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                        : "bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700"
-                    } shadow-lg`}
-                  >
-                    {member.team}
-                  </span>
-                </div>
-
-                {/* Avatar */}
-                <div className="relative w-32 h-32 mx-auto mb-6">
+                {/* Background Image */}
+                <div className="relative w-full h-48">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = "none";
+                      target.nextElementSibling?.classList.remove("hidden");
+                    }}
+                  />
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${member.gradient} rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500`}
-                  ></div>
-                  <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-2xl">
-                    <img
-                      src={`/images/team/${member.name
-                        .toLowerCase()
-                        .replace(" ", "-")}.svg`}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Fallback to initials if image fails to load
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = "none";
-                        target.nextElementSibling?.classList.remove("hidden");
-                      }}
-                    />
-                    <div
-                      className={`w-full h-full bg-gradient-to-br ${member.gradient} flex items-center justify-center text-white text-3xl font-bold hidden`}
+                    className={`absolute inset-0 bg-gradient-to-br ${member.gradient} flex items-center justify-center text-white text-4xl font-bold hidden`}
+                  >
+                    {member.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </div>
+
+                  {/* Overlay for better text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+                  {/* Team Badge */}
+                  <div className="absolute top-4 left-4">
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-medium transition-all duration-500 ${
+                        isDark
+                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                          : "bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700"
+                      } shadow-lg`}
                     >
-                      {member.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </div>
+                      {member.team}
+                    </span>
                   </div>
                 </div>
 
-                {/* Info */}
-                <div className="text-center">
-                  <h3
-                    className={`text-xl font-bold font-poppins mb-3 transition-all duration-500 ${
-                      isDark
-                        ? "text-white group-hover:text-blue-400"
-                        : "text-gray-900 group-hover:text-blue-600"
-                    }`}
-                  >
-                    {member.name}
-                  </h3>
-                  <p
-                    className={`font-inter text-base mb-6 transition-all duration-500 ${
-                      isDark ? "text-gray-300" : "text-gray-600"
-                    }`}
-                  >
-                    {member.role}
-                  </p>
+                {/* Content */}
+                <div className="p-6">
+                  {/* Info */}
+                  <div className="text-center mb-4">
+                    <h3
+                      className={`text-lg font-bold font-poppins mb-2 transition-all duration-500 ${
+                        isDark
+                          ? "text-white group-hover:text-blue-400"
+                          : "text-gray-900 group-hover:text-blue-600"
+                      }`}
+                    >
+                      {member.name}
+                    </h3>
+                    <p
+                      className={`font-inter text-sm font-medium transition-all duration-500 ${
+                        isDark ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
+                      {member.role}
+                    </p>
+                  </div>
+
+                  {/* Skills */}
+                  <div className="mb-4">
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {member.skills.slice(0, 2).map((skill, skillIndex) => (
+                        <span
+                          key={skill}
+                          className={`px-2 py-1 rounded-full text-xs font-medium transition-all duration-500 ${
+                            isDark
+                              ? "bg-gray-700/50 text-gray-300"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                      {member.skills.length > 2 && (
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium transition-all duration-500 ${
+                            isDark
+                              ? "bg-blue-600/20 text-blue-400"
+                              : "bg-blue-100 text-blue-700"
+                          }`}
+                        >
+                          +{member.skills.length - 2}
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
                   {/* Social Links */}
-                  <div className="flex justify-center space-x-4">
+                  <div className="flex justify-center space-x-3">
                     <a
                       href={member.linkedin}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 transform hover:scale-110 ${
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 transform hover:scale-110 ${
                         isDark
                           ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/25"
                           : "bg-gradient-to-r from-blue-100 to-purple-100 text-blue-600 hover:shadow-lg hover:shadow-blue-500/25"
                       }`}
                     >
-                      <Linkedin size={18} />
+                      <Linkedin size={16} />
                     </a>
                     <a
                       href={member.github}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 transform hover:scale-110 ${
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 transform hover:scale-110 ${
                         isDark
                           ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/25"
                           : "bg-gradient-to-r from-blue-100 to-purple-100 text-blue-600 hover:shadow-lg hover:shadow-blue-500/25"
                       }`}
                     >
-                      <Github size={18} />
+                      <Github size={16} />
+                    </a>
+                    <a
+                      href={`mailto:${member.name
+                        .toLowerCase()
+                        .replace(" ", ".")}@shrigsolutions.com`}
+                      className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500 transform hover:scale-110 ${
+                        isDark
+                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/25"
+                          : "bg-gradient-to-r from-blue-100 to-purple-100 text-blue-600 hover:shadow-lg hover:shadow-blue-500/25"
+                      }`}
+                    >
+                      <Mail size={16} />
                     </a>
                   </div>
                 </div>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* CTA */}
+        {/* Stats Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mt-20"
+          className="mb-20"
         >
-          <div className="relative rounded-3xl p-12 overflow-hidden">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { number: "12", label: "Team Members", icon: Users },
+              { number: "7", label: "Expertise Areas", icon: Sparkles },
+              { number: "50+", label: "Years Combined", icon: ArrowRight },
+              { number: "100%", label: "Dedication", icon: Users },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <div
+                  className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center transition-all duration-500 ${
+                    isDark
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                      : "bg-gradient-to-r from-blue-100 to-purple-100 text-blue-600"
+                  }`}
+                >
+                  <stat.icon className="w-8 h-8" />
+                </div>
+                <div
+                  className={`text-3xl md:text-4xl font-bold font-poppins mb-2 transition-all duration-500 ${
+                    isDark ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  {stat.number}
+                </div>
+                <div
+                  className={`text-sm font-medium transition-all duration-500 ${
+                    isDark ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <div className="relative rounded-2xl p-12 overflow-hidden">
             {/* Background gradient */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600"></div>
 
@@ -321,10 +346,10 @@ const TeamSection = () => {
 
             <div className="relative z-10 text-white">
               <h3 className="text-3xl font-bold font-poppins mb-4">
-                Join Our Team Today!
+                Ready to Join Our Team?
               </h3>
               <p className="text-xl mb-8 opacity-90">
-                Be Part of Something Innovative and Impactful
+                Be part of something extraordinary and help us shape the future
               </p>
               <button className="group bg-white text-blue-600 px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all duration-500 transform hover:scale-105 flex items-center gap-3 mx-auto shadow-2xl">
                 <span>Apply Today</span>
