@@ -1,6 +1,6 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { AnimationService } from "@/utils/animations";
+import React, { useRef, useEffect } from "react";
+import { useGSAP } from "@/utils/gsapAnimations";
+import { gsap } from "gsap";
 
 export interface CardProps {
   children: React.ReactNode;
@@ -21,6 +21,50 @@ const Card: React.FC<CardProps> = ({
   hover = false,
   animation = true,
 }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const gsapAnimations = useGSAP();
+
+  useEffect(() => {
+    if (!cardRef.current || !animation) return;
+
+    const ctx = gsap.context(() => {
+      // Initial card animation
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power2.out" }
+      );
+
+      // Hover animations
+      let hoverAnimation: any = null;
+      if (hover && cardRef.current) {
+        hoverAnimation = gsapAnimations.hoverScale(cardRef.current, 1.02);
+        cardRef.current.addEventListener(
+          "mouseenter",
+          hoverAnimation.onMouseEnter
+        );
+        cardRef.current.addEventListener(
+          "mouseleave",
+          hoverAnimation.onMouseLeave
+        );
+
+        return () => {
+          if (cardRef.current && hoverAnimation) {
+            cardRef.current.removeEventListener(
+              "mouseenter",
+              hoverAnimation.onMouseEnter
+            );
+            cardRef.current.removeEventListener(
+              "mouseleave",
+              hoverAnimation.onMouseLeave
+            );
+          }
+        };
+      }
+    }, cardRef);
+
+    return () => ctx.revert();
+  }, [animation, hover, gsapAnimations]);
   const baseClasses = "rounded-2xl transition-all duration-300";
 
   const variantClasses = {
@@ -47,13 +91,10 @@ const Card: React.FC<CardProps> = ({
     }
   };
 
-  const CardWrapper = animation ? motion.div : "div";
-  const animationProps = animation ? AnimationService.getHoverAnimation() : {};
-
   return (
-    <CardWrapper className={classes} onClick={handleClick} {...animationProps}>
+    <div ref={cardRef} className={classes} onClick={handleClick}>
       {children}
-    </CardWrapper>
+    </div>
   );
 };
 

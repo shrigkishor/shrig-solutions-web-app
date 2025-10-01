@@ -1,169 +1,124 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
+import { useGSAP } from "@/utils/gsapAnimations";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 const HeroSection = () => {
-  const { isDark } = useTheme();
+  const gsapAnimations = useGSAP();
+
+  // Refs for GSAP animations
+  const heroRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!heroRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Main hero animation timeline
+      const tl = gsap.timeline();
+
+      // Animate title with stagger effect
+      tl.fromTo(
+        titleRef.current?.querySelectorAll("span") || [],
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.3,
+          ease: "power2.out",
+        }
+      );
+
+      // Animate subtitle
+      tl.fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
+        "-=0.5"
+      );
+
+      // Animate buttons with scale effect
+      tl.fromTo(
+        buttonsRef.current?.querySelectorAll("button") || [],
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.2,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      );
+
+      // Button hover animations
+      const buttons = buttonsRef.current?.querySelectorAll("button") || [];
+      buttons.forEach((button) => {
+        const hoverAnimation = gsapAnimations.buttonHover(button);
+        button.addEventListener("mouseenter", hoverAnimation.onMouseEnter);
+        button.addEventListener("mouseleave", hoverAnimation.onMouseLeave);
+      });
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, [gsapAnimations]);
+
   return (
     <section
+      ref={heroRef}
       id="home"
-      className={`relative min-h-screen flex items-center justify-center overflow-hidden transition-all duration-700 ${
-        isDark
-          ? "bg-gradient-to-br from-[#0A0F1B] via-[#1A1F2B] to-[#0A0F1B]"
-          : "bg-gradient-to-br from-blue-50 via-white via-indigo-50 to-blue-100"
-      }`}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Futuristic Grid Pattern */}
-      <div className="absolute inset-0 opacity-30">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: `
-            linear-gradient(${
-              isDark ? "rgba(59,130,246,0.15)" : "rgba(59,130,246,0.08)"
-            } 1px, transparent 1px),
-            linear-gradient(90deg, ${
-              isDark ? "rgba(59,130,246,0.15)" : "rgba(59,130,246,0.08)"
-            } 1px, transparent 1px)
-          `,
-            backgroundSize: "50px 50px",
-          }}
-        ></div>
-      </div>
+      {/* Subtle Background Effects */}
+      <div className="absolute inset-0">
+        {/* Minimal gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-transparent to-slate-800/30"></div>
 
-      {/* Animated scanning lines */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-40 animate-pulse"></div>
+        {/* Subtle floating elements */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400/40 rounded-full animate-pulse"></div>
         <div
-          className="absolute top-3/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-40 animate-pulse"
+          className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-blue-400/60 rounded-full animate-pulse"
           style={{ animationDelay: "1s" }}
         ></div>
+        <div
+          className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-purple-400/50 rounded-full animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
       </div>
 
-      {/* Enhanced Animated Data Flow Visualization */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-32">
-          <div
-            className="w-2 h-2 bg-blue-400 rounded-full animate-bounce opacity-60"
-            style={{ animationDelay: "0s" }}
-          ></div>
-          <div
-            className="w-1 h-1 bg-blue-300 rounded-full animate-bounce opacity-40"
-            style={{ animationDelay: "0.5s", animationDuration: "2s" }}
-          ></div>
-          <div
-            className="w-3 h-3 bg-blue-500 rounded-full animate-bounce opacity-80"
-            style={{ animationDelay: "1s", animationDuration: "1.5s" }}
-          ></div>
-        </div>
-
-        {/* Data flow lines */}
-        <div className="absolute top-1/3 left-1/3 w-96 h-32">
-          <svg width="100%" height="100%" viewBox="0 0 400 128" fill="none">
-            <path
-              d="M20 100 L80 80 L140 60 L200 40 L260 20 L320 10 L380 5"
-              stroke={isDark ? "#3B82F6" : "#1D4ED8"}
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeDasharray="8,8"
-              className="animate-pulse"
-            />
-            <path
-              d="M10 110 L70 90 L130 70 L190 50 L250 30 L310 15 L370 8"
-              stroke={isDark ? "#60A5FA" : "#3B82F6"}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="5,5"
-              opacity="0.7"
-              className="animate-pulse"
-              style={{ animationDelay: "0.5s" }}
-            />
-          </svg>
-        </div>
-
-        {/* Lower data flow */}
-        <div className="absolute bottom-1/3 right-1/3 w-96 h-32">
-          <svg width="100%" height="100%" viewBox="0 0 400 128" fill="none">
-            <path
-              d="M20 100 L80 80 L140 60 L200 40 L260 20 L320 10 L380 5"
-              stroke={isDark ? "#3B82F6" : "#1D4ED8"}
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeDasharray="8,8"
-              className="animate-pulse"
-              style={{ animationDelay: "1s" }}
-            />
-            <path
-              d="M10 110 L70 90 L130 70 L190 50 L250 30 L310 15 L370 8"
-              stroke={isDark ? "#60A5FA" : "#3B82F6"}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="5,5"
-              opacity="0.7"
-              className="animate-pulse"
-              style={{ animationDelay: "1.5s" }}
-            />
-          </svg>
-        </div>
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="space-y-12"
-        >
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="space-y-16">
           {/* Main Headline */}
-          <div className="space-y-4">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className={`text-4xl md:text-5xl lg:text-6xl font-bold font-poppins leading-tight tracking-wide transition-all duration-500 ${
-                isDark ? "text-white" : "text-gray-900"
-              }`}
+          <div className="space-y-6">
+            <h1
+              ref={titleRef}
+              className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-white"
+              style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
             >
-              <span className="block bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-                BRIDGING GLOBAL
-              </span>
-              <span className="block tracking-wider bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-                TALENT AND
-              </span>
-              <span className="block tracking-wider bg-gradient-to-r from-purple-500 to-blue-600 bg-clip-text text-transparent">
-                INNOVATION
-              </span>
-            </motion.h1>
+              <span className="block text-white">BRIDGING GLOBAL</span>
+              <span className="block text-cyan-400">TALENT AND INNOVATION</span>
+            </h1>
           </div>
 
           {/* Descriptive Paragraph */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className={`text-lg md:text-xl lg:text-2xl max-w-4xl mx-auto font-inter font-light leading-relaxed transition-all duration-500 ${
-              isDark ? "text-gray-300" : "text-gray-600"
-            }`}
+          <p
+            ref={subtitleRef}
+            className="text-xl md:text-2xl lg:text-3xl max-w-5xl mx-auto font-light leading-relaxed text-gray-300"
+            style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
           >
-            <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-medium">
-              Driving success
-            </span>{" "}
-            through seamless partnerships, unmatched expertise, and a passion
-            for{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent font-medium">
-              delivering innovative solutions.
-            </span>
-          </motion.p>
+            Driving success through seamless partnerships, unmatched expertise,
+            and a passion for delivering innovative solutions.
+          </p>
 
           {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-8 justify-center items-center pt-12"
+          <div
+            ref={buttonsRef}
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-12"
           >
             {/* Explore Our Services Button */}
             <button
@@ -176,14 +131,12 @@ const HeroSection = () => {
                   });
                 }
               }}
-              className="group relative bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-500 transform hover:scale-110 flex items-center gap-4 shadow-2xl hover:shadow-blue-500/25"
+              className="group relative bg-gradient-to-r from-blue-400 to-blue-600 text-white px-10 py-4 rounded-full text-lg font-medium flex items-center gap-3 transition-all duration-300"
             >
-              {/* Button glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
-              <span className="relative z-10">Explore Our Services</span>
+              <span>Explore Our Services</span>
               <ArrowUpRight
                 size={20}
-                className="relative z-10 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500"
+                className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
               />
             </button>
 
@@ -198,43 +151,17 @@ const HeroSection = () => {
                   });
                 }
               }}
-              className={`group relative border-2 px-8 py-4 rounded-full text-lg font-bold transition-all duration-500 transform hover:scale-110 flex items-center gap-4 backdrop-blur-sm ${
-                isDark
-                  ? "border-white text-white hover:bg-white hover:text-gray-900"
-                  : "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-              }`}
+              className="group relative bg-black border border-blue-300 text-white px-10 py-4 rounded-full text-lg font-medium flex items-center gap-3 transition-all duration-300"
             >
-              {/* Button glow effect */}
-              <div
-                className={`absolute inset-0 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-500 ${
-                  isDark ? "bg-white" : "bg-blue-600"
-                }`}
-              ></div>
-              <span className="relative z-10">Join Our Team</span>
+              <span>Join Our Team</span>
               <ArrowUpRight
                 size={20}
-                className="relative z-10 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500"
+                className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
               />
             </button>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1 h-3 bg-gray-400 rounded-full mt-2"
-          />
+          </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

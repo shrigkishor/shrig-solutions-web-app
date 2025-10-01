@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   Linkedin,
   Github,
@@ -32,14 +31,7 @@ const TeamSection = () => {
   }));
 
   return (
-    <section
-      id="team"
-      className={`relative py-24 overflow-hidden transition-all duration-700 ${
-        isDark
-          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
-          : "bg-gradient-to-br from-gray-50 via-white to-blue-50"
-      }`}
-    >
+    <section id="team" className="relative py-24 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         {/* Team Background Image */}
@@ -49,15 +41,6 @@ const TeamSection = () => {
             backgroundImage: "url('/images/team/team-background.jpg')",
             opacity: isDark ? 0.05 : 0.02,
           }}
-        ></div>
-
-        {/* Overlay for better text readability */}
-        <div
-          className={`absolute inset-0 ${
-            isDark
-              ? "bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95"
-              : "bg-gradient-to-br from-gray-50/98 via-white/95 to-blue-50/98"
-          }`}
         ></div>
 
         {/* Subtle animated elements */}
@@ -76,23 +59,11 @@ const TeamSection = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-medium mb-8"
-          >
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-medium mb-8">
             <Users className="w-4 h-4" />
             Our Team
-          </motion.div>
+          </div>
 
           <h2
             className={`text-5xl md:text-6xl font-bold font-poppins mb-8 transition-all duration-500 ${
@@ -112,25 +83,12 @@ const TeamSection = () => {
             The brilliant minds behind our innovative solutions and exceptional
             results
           </p>
-        </motion.div>
+        </div>
 
         {/* Team Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-20"
-        >
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-20">
           {teamMembers.map((member, index) => (
-            <motion.div
-              key={member.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="group"
-            >
+            <div key={member.name} className="group">
               <div
                 className={`relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
                   isDark
@@ -268,18 +226,12 @@ const TeamSection = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { number: "12", label: "Team Members", icon: Users },
@@ -287,14 +239,7 @@ const TeamSection = () => {
               { number: "50+", label: "Years Combined", icon: ArrowRight },
               { number: "100%", label: "Dedication", icon: Users },
             ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
+              <div key={stat.label} className="text-center">
                 <div
                   className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center transition-all duration-500 ${
                     isDark
@@ -318,19 +263,13 @@ const TeamSection = () => {
                 >
                   {stat.label}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
+        <div className="text-center">
           <div className="relative rounded-2xl p-12 overflow-hidden">
             {/* Background gradient */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600"></div>
@@ -351,13 +290,13 @@ const TeamSection = () => {
               <p className="text-xl mb-8 opacity-90">
                 Be part of something extraordinary and help us shape the future
               </p>
-              <button className="group bg-white text-blue-600 px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all duration-500 transform hover:scale-105 flex items-center gap-3 mx-auto shadow-2xl">
+              <button className="group bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-10 py-4 rounded-full text-lg font-bold transition-all duration-500 transform hover:scale-105 flex items-center gap-3 mx-auto shadow-2xl">
                 <span>Apply Today</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

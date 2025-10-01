@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { AnimationService } from "@/utils/animations";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Card from "@/components/ui/Card";
@@ -100,36 +98,21 @@ const BlogPage = () => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
         {/* Hero Section */}
-        <motion.div
-          className="text-center mb-16"
-          {...AnimationService.getFadeInAnimation()}
-        >
-          <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
-            {...AnimationService.getSlideInAnimation("up")}
-          >
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Blogs
-          </motion.h1>
-          <motion.h2
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8"
-            {...AnimationService.getSlideInAnimation("up", 0.2)}
-          >
+          </h1>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
             Insights & Inspiration
-          </motion.h2>
-          <motion.p
-            className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
-            {...AnimationService.getSlideInAnimation("up", 0.4)}
-          >
+          </h2>
+          <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
             Stay Updated with the Latest in Tech, Innovation, and Industry
             Trends
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Category Filter */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-4 mb-12"
-          {...AnimationService.getFadeInAnimation(0.6)}
-        >
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
           {categories.map((category, index) => (
             <button
               key={category}
@@ -142,13 +125,10 @@ const BlogPage = () => {
               {category}
             </button>
           ))}
-        </motion.div>
+        </div>
 
         {/* Featured Post */}
-        <motion.div
-          className="mb-16"
-          {...AnimationService.getFadeInAnimation(0.8)}
-        >
+        <div className="mb-16">
           <Card
             variant="glass"
             className="overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300"
@@ -194,23 +174,17 @@ const BlogPage = () => {
               </div>
             </div>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Blog Posts Grid */}
-        <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          {...AnimationService.getStaggeredAnimation(0.1)}
-        >
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogPosts.slice(1).map((post, index) => (
             <Card
               key={index}
               variant="glass"
               className="group overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300"
             >
-              <motion.div
-                className="relative"
-                {...AnimationService.getFadeInAnimation(index * 0.2)}
-              >
+              <div className="relative">
                 {/* Post Image */}
                 <div className="aspect-video bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-lg mb-6 flex items-center justify-center">
                   <div className="text-6xl opacity-60 group-hover:opacity-80 transition-opacity duration-300">
@@ -223,10 +197,7 @@ const BlogPage = () => {
                 </div>
 
                 {/* Post Info */}
-                <motion.div
-                  className="p-6"
-                  {...AnimationService.getSlideInAnimation("up", index * 0.2)}
-                >
+                <div className="p-6">
                   <div className="flex items-center gap-4 mb-3">
                     <span className="text-sm text-blue-400 font-medium">
                       {post.category}
@@ -265,21 +236,15 @@ const BlogPage = () => {
                       Read →
                     </button>
                   </div>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             </Card>
           ))}
-        </motion.div>
+        </div>
 
         {/* Newsletter Signup */}
-        <motion.div
-          className="text-center mt-20"
-          {...AnimationService.getFadeInAnimation(1)}
-        >
-          <motion.div
-            className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-12 border border-blue-500/30"
-            {...AnimationService.getSlideInAnimation("up")}
-          >
+        <div className="text-center mt-20">
+          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-12 border border-blue-500/30">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
               Stay Updated
             </h2>
@@ -293,12 +258,12 @@ const BlogPage = () => {
                 placeholder="Enter your email"
                 className="flex-1 px-4 py-3 bg-white/10 border border-blue-500/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
               />
-              <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300">
+              <button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300">
                 Subscribe
               </button>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
       <Footer />

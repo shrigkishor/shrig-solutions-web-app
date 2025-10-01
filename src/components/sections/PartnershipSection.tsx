@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Handshake, ArrowRight, Sparkles, Globe, Target } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -71,23 +70,11 @@ const PartnershipSection = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-6"
-          >
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
             <Handshake className="w-4 h-4" />
             Strategic Partnership
-          </motion.div>
+          </div>
 
           <h2
             className={`text-5xl md:text-6xl font-bold font-poppins mb-6 transition-all duration-500 ${
@@ -107,17 +94,11 @@ const PartnershipSection = () => {
             A strategic alliance that combines expertise, innovation, and shared
             vision to deliver exceptional results
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
           {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
+          <div className="space-y-8">
             <div className="space-y-6">
               <h3
                 className={`text-3xl md:text-4xl font-bold font-poppins transition-all duration-500 ${
@@ -152,14 +133,7 @@ const PartnershipSection = () => {
             {/* Benefits */}
             <div className="space-y-6">
               {benefits.map((benefit, index) => (
-                <motion.div
-                  key={benefit.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  viewport={{ once: true }}
-                  className="flex items-start space-x-4"
-                >
+                <div key={benefit.title} className="flex items-start space-x-4">
                   <div
                     className={`flex-shrink-0 w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-xl flex items-center justify-center shadow-lg`}
                   >
@@ -181,30 +155,18 @@ const PartnershipSection = () => {
                       {benefit.description}
                     </p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              viewport={{ once: true }}
-              className="group relative bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-full text-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-500 transform hover:scale-105 flex items-center gap-3 shadow-2xl hover:shadow-blue-500/25"
-            >
+            <button className="group relative bg-gradient-to-r from-blue-400 to-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold hover:from-blue-500 hover:to-blue-700 transition-all duration-500 transform hover:scale-105 flex items-center gap-3 shadow-2xl hover:shadow-blue-500/25">
               <span>Learn More About Our Partnership</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
 
           {/* Visual */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
+          <div className="relative">
             <div
               className={`relative rounded-3xl p-12 h-[500px] flex items-center justify-center overflow-hidden ${
                 isDark
@@ -226,15 +188,9 @@ const PartnershipSection = () => {
               </div>
 
               <div className="relative z-10 text-center space-y-6">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.8, type: "spring" }}
-                  viewport={{ once: true }}
-                  className="w-32 h-32 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full mx-auto flex items-center justify-center shadow-2xl"
-                >
+                <div className="w-32 h-32 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full mx-auto flex items-center justify-center shadow-2xl">
                   <Handshake className="w-16 h-16 text-white" />
-                </motion.div>
+                </div>
                 <div>
                   <h3
                     className={`text-3xl font-bold font-poppins mb-4 transition-all duration-500 ${
@@ -255,27 +211,16 @@ const PartnershipSection = () => {
             </div>
 
             {/* Floating decorative elements */}
-            <motion.div
-              animate={{ y: [-10, 10, -10] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full opacity-30 blur-sm"
-            ></motion.div>
-            <motion.div
-              animate={{ y: [10, -10, 10] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="absolute -bottom-6 -left-6 w-20 h-20 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full opacity-30 blur-sm"
-            ></motion.div>
-          </motion.div>
+            <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full opacity-30 blur-sm animate-pulse"></div>
+            <div
+              className="absolute -bottom-6 -left-6 w-20 h-20 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full opacity-30 blur-sm animate-pulse"
+              style={{ animationDelay: "2s" }}
+            ></div>
+          </div>
         </div>
 
         {/* Partnership Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="grid md:grid-cols-3 gap-8 mt-20"
-        >
+        <div className="grid md:grid-cols-3 gap-8 mt-20">
           {[
             {
               number: "5+",
@@ -293,14 +238,7 @@ const PartnershipSection = () => {
               gradient: "from-green-500 to-emerald-500",
             },
           ].map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
+            <div key={stat.label} className="text-center">
               <div
                 className={`relative rounded-3xl p-8 transition-all duration-500 hover:scale-105 ${
                   isDark
@@ -328,9 +266,9 @@ const PartnershipSection = () => {
                   {stat.label}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

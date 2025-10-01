@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Car, Zap, Shield, Wifi } from "lucide-react";
 
 const CarShowcaseSection = () => {
@@ -35,13 +34,7 @@ const CarShowcaseSection = () => {
     <section className="py-20 bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-poppins mb-6">
             Automotive Technology Excellence
           </h2>
@@ -49,17 +42,11 @@ const CarShowcaseSection = () => {
             Driving the future of transportation with cutting-edge automotive
             solutions
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Car Image */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
+          <div className="relative">
             <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-8">
               <img
                 src="/images/cars/tech-car.svg"
@@ -71,25 +58,12 @@ const CarShowcaseSection = () => {
             {/* Floating elements */}
             <div className="absolute -top-4 -right-4 w-20 h-20 bg-yellow-400 rounded-full opacity-20 animate-pulse"></div>
             <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-pink-400 rounded-full opacity-20 animate-pulse animation-delay-2000"></div>
-          </motion.div>
+          </div>
 
           {/* Features */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
+          <div className="space-y-8">
             {carFeatures.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="flex items-start space-x-4"
-              >
+              <div key={feature.title} className="flex items-start space-x-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
                   <feature.icon className="w-6 h-6 text-white" />
                 </div>
@@ -101,29 +75,17 @@ const CarShowcaseSection = () => {
                     {feature.description}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
 
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors duration-300"
-            >
+            <button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all duration-300">
               Explore Automotive Solutions
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
         </div>
 
         {/* Additional Cars Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="mt-16 grid md:grid-cols-3 gap-8"
-        >
+        <div className="mt-16 grid md:grid-cols-3 gap-8">
           {[1, 2, 3].map((car) => (
             <div
               key={car}
@@ -141,7 +103,7 @@ const CarShowcaseSection = () => {
               </p>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

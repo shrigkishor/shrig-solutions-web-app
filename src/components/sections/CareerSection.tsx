@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { AnimationService } from "@/utils/animations";
 import { Briefcase, Users, TrendingUp, Globe } from "lucide-react";
 import Card from "@/components/ui/Card";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -119,49 +117,28 @@ const CareerSection = () => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
-        <motion.div
-          className="text-center mb-16"
-          {...AnimationService.getFadeInAnimation()}
-        >
-          <motion.h2
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6"
-            {...AnimationService.getSlideInAnimation("up")}
-          >
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
             Join a Team That Builds
-          </motion.h2>
-          <motion.h3
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-300 mb-6"
-            {...AnimationService.getSlideInAnimation("up", 0.1)}
-          >
+          </h2>
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-300 mb-6">
             Global solutions
-          </motion.h3>
-          <motion.p
-            className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8"
-            {...AnimationService.getSlideInAnimation("up", 0.2)}
-          >
-            At Shrig Solutions, we don't just create digital solutions—we build
-            careers. Join a team that values innovation, collaboration, and
-            personal growth.
-          </motion.p>
-          <motion.button
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-full font-medium transition-all duration-300"
-            {...AnimationService.getSlideInAnimation("up", 0.3)}
-          >
+          </h3>
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            At Shrig Solutions, we don&apos;t just create digital solutions—we
+            build careers. Join a team that values innovation, collaboration,
+            and personal growth.
+          </p>
+          <button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-full font-medium transition-all duration-300">
             Explore Open Positions
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
 
         {/* Benefits Section */}
-        <motion.div
-          className="mb-16"
-          {...AnimationService.getFadeInAnimation(0.4)}
-        >
-          <motion.h3
-            className="text-2xl md:text-3xl font-bold text-white text-center mb-12"
-            {...AnimationService.getSlideInAnimation("up")}
-          >
+        <div className="mb-16">
+          <h3 className="text-2xl md:text-3xl font-bold text-white text-center mb-12">
             Why Join Shrig Solutions?
-          </motion.h3>
+          </h3>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {careerBenefits.map((benefit, index) => (
@@ -170,46 +147,28 @@ const CareerSection = () => {
                 variant="glass"
                 className="text-center p-6 border border-blue-500/20"
               >
-                <motion.div
-                  className="text-4xl mb-4 flex justify-center"
-                  {...AnimationService.getFadeInAnimation(index * 0.1)}
-                >
+                <div className="text-4xl mb-4 flex justify-center">
                   <benefit.icon className="text-blue-400" />
-                </motion.div>
-                <motion.h4
-                  className="text-lg md:text-xl font-semibold text-white mb-3"
-                  {...AnimationService.getSlideInAnimation("up", index * 0.1)}
-                >
+                </div>
+                <h4 className="text-lg md:text-xl font-semibold text-white mb-3">
                   {benefit.title}
-                </motion.h4>
-                <motion.p
-                  className="text-gray-300"
-                  {...AnimationService.getSlideInAnimation(
-                    "up",
-                    index * 0.1 + 0.1
-                  )}
-                >
-                  {benefit.description}
-                </motion.p>
+                </h4>
+                <p className="text-gray-300">{benefit.description}</p>
               </Card>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Open Positions */}
-        <motion.div
-          className="mb-16"
-          {...AnimationService.getFadeInAnimation(0.6)}
-        >
-          <motion.div
-            className="text-center mb-8"
-            {...AnimationService.getSlideInAnimation("up")}
-          >
+        <div className="mb-16">
+          <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
               CURRENT OPENINGS
             </h3>
-            <p className="text-lg md:text-xl text-gray-300">We're hiring!</p>
-          </motion.div>
+            <p className="text-lg md:text-xl text-gray-300">
+              We&apos;re hiring!
+            </p>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {openPositions.map((position, index) => (
@@ -218,9 +177,7 @@ const CareerSection = () => {
                 variant="glass"
                 className="p-6 border border-blue-500/20 hover:border-blue-500/40 transition-all duration-300"
               >
-                <motion.div
-                  {...AnimationService.getSlideInAnimation("up", index * 0.1)}
-                >
+                <div>
                   <div className="flex justify-between items-start mb-4">
                     <h4 className="text-xl font-semibold text-white">
                       {position.title}
@@ -245,24 +202,18 @@ const CareerSection = () => {
                     </div>
                   </div>
 
-                  <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-full font-medium transition-all duration-300">
+                  <button className="w-full bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-4 py-2 rounded-full font-medium transition-all duration-300">
                     APPLY NOW
                   </button>
-                </motion.div>
+                </div>
               </Card>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* CTA Section */}
-        <motion.div
-          className="text-center"
-          {...AnimationService.getFadeInAnimation(0.8)}
-        >
-          <motion.div
-            className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-12 border border-blue-500/30"
-            {...AnimationService.getSlideInAnimation("up")}
-          >
+        <div className="text-center">
+          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-12 border border-blue-500/30">
             <h3 className="text-3xl font-bold text-white mb-4">
               Join Our Team Today!
             </h3>
@@ -273,14 +224,14 @@ const CareerSection = () => {
               At Shrig Solutions, we believe in fostering talent and empowering
               individuals to thrive in a collaborative and dynamic environment.
               Join our passionate team and work on cutting-edge projects that
-              make a real difference. If you're driven by innovation and eager
-              to grow, we'd love to have you on board.
+              make a real difference. If you&apos;re driven by innovation and
+              eager to grow, we&apos;d love to have you on board.
             </p>
-            <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-full font-medium transition-all duration-300">
+            <button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-8 py-3 rounded-full font-medium transition-all duration-300">
               Apply Today
             </button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );

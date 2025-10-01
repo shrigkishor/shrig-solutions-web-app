@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -10,20 +9,12 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className={`py-20 transition-all duration-700 ${
-        isDark ? "bg-gray-900" : "bg-white"
-      }`}
+      className="py-20 relative"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
+          <div className="space-y-8">
             <div className="space-y-4">
               <h2
                 className={`text-3xl md:text-4xl lg:text-5xl font-bold font-poppins transition-all duration-500 ${
@@ -37,7 +28,7 @@ const ContactSection = () => {
                   isDark ? "text-gray-300" : "text-gray-600"
                 }`}
               >
-                Share your vision. We'll bring it to Life.
+                Share your vision. We&apos;ll bring it to Life.
               </p>
             </div>
 
@@ -152,18 +143,14 @@ const ContactSection = () => {
                   isDark ? "text-gray-200" : "text-gray-700"
                 }`}
               >
-                <strong>We're committed to strict confidentiality.</strong> Your
-                ideas and information are safe with us.
+                <strong>We&apos;re committed to strict confidentiality.</strong>{" "}
+                Your ideas and information are safe with us.
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+          <div
             className={`rounded-2xl p-8 transition-all duration-500 ${
               isDark ? "bg-gray-800 border border-gray-700/50" : "bg-gray-50"
             }`}
@@ -291,7 +278,7 @@ const ContactSection = () => {
                 Contact Now
               </button>
             </form>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

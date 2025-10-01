@@ -1,22 +1,31 @@
 "use client";
 
-import { Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { useNavigation } from "@/hooks/useNavigation";
-import { AnimationService } from "@/utils/animations";
 import { useState, useEffect, useRef } from "react";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useRouter, usePathname } from "next/navigation";
-import ShrigLogo from "@/components/ui/ShrigLogo";
+import { gsap } from "gsap";
+import ShrigLogo from "./ui/ShrigLogo";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Navigation = () => {
   const { isOpen, activeItem, toggleMenu, closeMenu, navigationItems } =
     useNavigation();
-  const { isDark, toggleTheme } = useTheme();
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [resourceDropdownOpen, setResourceDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { isDark } = useTheme();
+
+  // Refs for GSAP animations
+  const navRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const logoContainerRef = useRef<HTMLDivElement>(null);
+  const logoGlowRef = useRef<HTMLDivElement>(null);
+  const menuItemsRef = useRef<HTMLDivElement>(null);
+  const ctaButtonRef = useRef<HTMLDivElement>(null);
+  const themeToggleRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Function to handle navigation with proper routing
   const handleNavigation = (href: string) => {
@@ -68,95 +77,210 @@ const Navigation = () => {
     };
   }, []);
 
+  // GSAP animations for navigation - only on initial page load
+  useEffect(() => {
+    if (!navRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Initial navigation animation - only runs once on page load
+      const tl = gsap.timeline();
+
+      // Animate logo with enhanced effects
+      tl.fromTo(
+        logoRef.current,
+        { opacity: 0, x: -50, scale: 0.8 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.8, ease: "back.out(1.7)" }
+      );
+
+      // Logo continuous floating animation
+      gsap.to(logoRef.current, {
+        y: -2,
+        duration: 3,
+        ease: "power2.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+      // Logo glow pulse animation
+      if (logoGlowRef.current) {
+        gsap.to(logoGlowRef.current, {
+          opacity: 0.1,
+          duration: 2,
+          ease: "power2.inOut",
+          yoyo: true,
+          repeat: -1,
+        });
+      }
+
+      // Animate menu items with stagger
+      tl.fromTo(
+        menuItemsRef.current?.querySelectorAll("div") || [],
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "power2.out" },
+        "-=0.3"
+      );
+
+      // Animate CTA button and theme toggle
+      tl.fromTo(
+        [ctaButtonRef.current, themeToggleRef.current],
+        { opacity: 0, scale: 0.8 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        },
+        "-=0.2"
+      );
+    }, navRef);
+
+    return () => ctx.revert();
+  }, []); // Empty dependency array - only runs once on mount
+
+  // Logo hover animations
+  useEffect(() => {
+    if (!logoContainerRef.current) return;
+
+    const logoContainer = logoContainerRef.current;
+    const logoGlow = logoGlowRef.current;
+
+    const handleMouseEnter = () => {
+      gsap.to(logoContainer, {
+        scale: 1.1,
+        rotation: 5,
+        duration: 0.3,
+        ease: "power2.out",
+      });
+
+      if (logoGlow) {
+        gsap.to(logoGlow, {
+          opacity: 0.4,
+          scale: 1.2,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      }
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(logoContainer, {
+        scale: 1,
+        rotation: 0,
+        duration: 0.3,
+        ease: "power2.out",
+      });
+
+      if (logoGlow) {
+        gsap.to(logoGlow, {
+          opacity: 0,
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      }
+    };
+
+    const handleClick = () => {
+      gsap.to(logoContainer, {
+        scale: 0.95,
+        duration: 0.1,
+        yoyo: true,
+        repeat: 1,
+        ease: "power2.inOut",
+      });
+    };
+
+    logoContainer.addEventListener("mouseenter", handleMouseEnter);
+    logoContainer.addEventListener("mouseleave", handleMouseLeave);
+    logoContainer.addEventListener("click", handleClick);
+
+    return () => {
+      logoContainer.removeEventListener("mouseenter", handleMouseEnter);
+      logoContainer.removeEventListener("mouseleave", handleMouseLeave);
+      logoContainer.removeEventListener("click", handleClick);
+    };
+  }, []);
+
+  // Separate effect for mobile menu and dropdown animations
+  useEffect(() => {
+    if (!navRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Mobile menu animation
+      if (isOpen && mobileMenuRef.current) {
+        gsap.fromTo(
+          mobileMenuRef.current,
+          { opacity: 0, height: 0 },
+          { opacity: 1, height: "auto", duration: 0.3, ease: "power2.out" }
+        );
+
+        gsap.fromTo(
+          mobileMenuRef.current.querySelectorAll("div"),
+          { opacity: 0, x: 20 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.4,
+            stagger: 0.1,
+            ease: "power2.out",
+            delay: 0.1,
+          }
+        );
+      }
+
+      // Dropdown animations
+      if (aboutDropdownOpen || resourceDropdownOpen) {
+        const dropdown = document.querySelector(".dropdown-menu");
+        if (dropdown) {
+          gsap.fromTo(
+            dropdown,
+            { opacity: 0, y: -10, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.2, ease: "power2.out" }
+          );
+        }
+      }
+    }, navRef);
+
+    return () => ctx.revert();
+  }, [isOpen, aboutDropdownOpen, resourceDropdownOpen]);
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isDark
-          ? "bg-gradient-to-r from-[#0A0F1B] via-[#1A1F2B] to-[#0A0F1B] border-b border-blue-500/20 backdrop-blur-xl"
-          : "bg-gradient-to-r from-white/95 via-blue-50/80 to-white/95 border-b border-blue-200/50 backdrop-blur-xl"
-      }`}
+      ref={navRef}
+      className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-sm"
     >
-      {/* Futuristic grid pattern overlay */}
-      <div className="absolute inset-0 opacity-30">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: `
-            linear-gradient(${
-              isDark ? "rgba(59,130,246,0.1)" : "rgba(59,130,246,0.05)"
-            } 1px, transparent 1px),
-            linear-gradient(90deg, ${
-              isDark ? "rgba(59,130,246,0.1)" : "rgba(59,130,246,0.05)"
-            } 1px, transparent 1px)
-          `,
-            backgroundSize: "30px 30px",
-          }}
-        ></div>
-      </div>
-
-      {/* Animated scanning line */}
-      <div
-        className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-60 animate-pulse`}
-      ></div>
-
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <motion.div
-            className="flex-shrink-0 flex items-center"
-            {...AnimationService.getFadeInAnimation()}
-          >
+          <div ref={logoRef} className="flex-shrink-0 flex items-center">
             <div
-              className={`h-10 w-auto group relative transition-all duration-500 ${
-                isDark ? "text-white" : "text-gray-900"
-              }`}
+              ref={logoContainerRef}
+              className="h-10 w-auto group relative cursor-pointer text-white"
             >
-              <ShrigLogo
-                className="h-10 w-auto transition-all duration-500 group-hover:scale-105"
-                alt="Shrig Solutions"
-                isDark={isDark}
-              />
-              {/* Logo glow effect */}
-              <div
-                className={`absolute inset-0 blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 ${
-                  isDark ? "bg-blue-400" : "bg-blue-600"
-                }`}
-              ></div>
+              <div className="relative">
+                <ShrigLogo
+                  className="h-10 w-auto"
+                  alt="Shrig Solutions"
+                  isDark={isDark}
+                />
+              </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-8 relative group">
-              {/* Navigation glow effect */}
-              <div
-                className={`absolute inset-0 blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${
-                  isDark ? "bg-blue-500/20" : "bg-blue-400/20"
-                }`}
-              ></div>
+            <div ref={menuItemsRef} className="flex items-center space-x-8">
               {navigationItems.map((item, index) => (
-                <motion.div
-                  key={item.name}
-                  className="relative"
-                  {...AnimationService.getFadeInAnimation(index * 0.1)}
-                >
+                <div key={item.name} className="relative">
                   {item.name === "About" ? (
                     <div className="relative" ref={dropdownRef}>
                       <button
                         onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-                        className={`px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center ${
-                          isDark
-                            ? `text-white ${
-                                aboutDropdownOpen
-                                  ? "text-white"
-                                  : "text-gray-300"
-                              }`
-                            : `text-gray-700 ${
-                                aboutDropdownOpen
-                                  ? "text-blue-600"
-                                  : "text-gray-700"
-                              }`
-                        }`}
+                        className="px-3 py-2 text-sm font-medium text-white hover:text-cyan-400 transition-colors duration-200 flex items-center"
+                        style={{
+                          fontFamily: "system-ui, -apple-system, sans-serif",
+                        }}
                       >
                         {item.name}
                         <ChevronDown
@@ -172,42 +296,24 @@ const Navigation = () => {
                       )}
 
                       {/* About Dropdown */}
-                      <AnimatePresence>
-                        {aboutDropdownOpen && (
-                          <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            className={`absolute top-full left-0 mt-2 w-48 border rounded-md shadow-lg z-50 transition-colors duration-300 ${
-                              isDark
-                                ? "bg-black border-gray-800"
-                                : "bg-white border-gray-200"
-                            }`}
-                          >
-                            <div className="py-2">
-                              {aboutDropdownItems.map(
-                                (dropdownItem, dropdownIndex) => (
-                                  <motion.a
-                                    key={dropdownItem.name}
-                                    href={dropdownItem.href}
-                                    className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                                      isDark
-                                        ? "text-white hover:bg-gray-900"
-                                        : "text-gray-700 hover:bg-gray-100"
-                                    }`}
-                                    onClick={() => setAboutDropdownOpen(false)}
-                                    {...AnimationService.getFadeInAnimation(
-                                      dropdownIndex * 0.1
-                                    )}
-                                  >
-                                    {dropdownItem.name}
-                                  </motion.a>
-                                )
-                              )}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      {aboutDropdownOpen && (
+                        <div className="dropdown-menu absolute top-full left-0 mt-2 w-48 border rounded-md shadow-lg z-50 transition-colors duration-300 bg-black border-gray-800">
+                          <div className="py-2">
+                            {aboutDropdownItems.map(
+                              (dropdownItem, dropdownIndex) => (
+                                <a
+                                  key={dropdownItem.name}
+                                  href={dropdownItem.href}
+                                  className="block px-4 py-2 text-sm transition-colors duration-200 text-white hover:bg-gray-900"
+                                  onClick={() => setAboutDropdownOpen(false)}
+                                >
+                                  {dropdownItem.name}
+                                </a>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ) : item.name === "Resource" ? (
                     <div className="relative" ref={dropdownRef}>
@@ -215,19 +321,10 @@ const Navigation = () => {
                         onClick={() =>
                           setResourceDropdownOpen(!resourceDropdownOpen)
                         }
-                        className={`px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center ${
-                          isDark
-                            ? `text-white ${
-                                resourceDropdownOpen
-                                  ? "text-white"
-                                  : "text-gray-300"
-                              }`
-                            : `text-gray-700 ${
-                                resourceDropdownOpen
-                                  ? "text-blue-600"
-                                  : "text-gray-700"
-                              }`
-                        }`}
+                        className="px-3 py-2 text-sm font-medium text-white hover:text-cyan-400 transition-colors duration-200 flex items-center"
+                        style={{
+                          fontFamily: "system-ui, -apple-system, sans-serif",
+                        }}
                       >
                         {item.name}
                         <ChevronDown
@@ -243,311 +340,211 @@ const Navigation = () => {
                       )}
 
                       {/* Resource Dropdown */}
-                      <AnimatePresence>
-                        {resourceDropdownOpen && (
-                          <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            className={`absolute top-full left-0 mt-2 w-48 border rounded-md shadow-lg z-50 transition-colors duration-300 ${
-                              isDark
-                                ? "bg-black border-gray-800"
-                                : "bg-white border-gray-200"
-                            }`}
-                          >
-                            <div className="py-2">
-                              {resourceDropdownItems.map(
-                                (dropdownItem, dropdownIndex) => (
-                                  <motion.a
-                                    key={dropdownItem.name}
-                                    href={dropdownItem.href}
-                                    className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                                      isDark
-                                        ? "text-white hover:bg-gray-900"
-                                        : "text-gray-700 hover:bg-gray-100"
-                                    }`}
-                                    onClick={() =>
-                                      setResourceDropdownOpen(false)
-                                    }
-                                    {...AnimationService.getFadeInAnimation(
-                                      dropdownIndex * 0.1
-                                    )}
-                                  >
-                                    {dropdownItem.name}
-                                  </motion.a>
-                                )
-                              )}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      {resourceDropdownOpen && (
+                        <div className="dropdown-menu absolute top-full left-0 mt-2 w-48 border rounded-md shadow-lg z-50 transition-colors duration-300 bg-black border-gray-800">
+                          <div className="py-2">
+                            {resourceDropdownItems.map(
+                              (dropdownItem, dropdownIndex) => (
+                                <a
+                                  key={dropdownItem.name}
+                                  href={dropdownItem.href}
+                                  className="block px-4 py-2 text-sm transition-colors duration-200 text-white hover:bg-gray-900"
+                                  onClick={() => setResourceDropdownOpen(false)}
+                                >
+                                  {dropdownItem.name}
+                                </a>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <>
                       <button
                         onClick={() => handleNavigation(item.href)}
-                        className={`px-4 py-2 text-sm font-medium transition-all duration-300 relative ${
-                          isDark
-                            ? `text-white ${
-                                activeItem === item.href.replace("#", "")
-                                  ? "text-blue-300"
-                                  : "text-gray-300"
-                              }`
-                            : `text-gray-700 ${
-                                activeItem === item.href.replace("#", "")
-                                  ? "text-blue-600"
-                                  : "text-gray-700"
-                              }`
+                        className={`px-4 py-2 text-sm font-medium transition-colors duration-200 relative group ${
+                          activeItem === item.href.replace("#", "")
+                            ? "text-cyan-400"
+                            : "text-white hover:text-cyan-400"
                         }`}
+                        style={{
+                          fontFamily: "system-ui, -apple-system, sans-serif",
+                        }}
                       >
                         {item.name}
+                        {/* Active indicator */}
+                        {activeItem === item.href.replace("#", "") && (
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"></div>
+                        )}
+                        {/* Hover effect */}
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400/0 to-blue-400/0 group-hover:from-cyan-400/50 group-hover:to-blue-400/50 rounded-full transition-all duration-300"></div>
                       </button>
-                      {/* Active indicator line */}
-                      {activeItem === item.href.replace("#", "") && (
-                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#00BFFF]"></div>
-                      )}
                     </>
                   )}
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
 
           {/* CTA Button */}
-          <motion.div
-            className="hidden md:block"
-            {...AnimationService.getFadeInAnimation(0.6)}
-          >
-            <button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 uppercase tracking-wide shadow-lg">
-              <span className="relative z-10">CONTACT US</span>
-            </button>
-          </motion.div>
-
-          {/* Theme Toggle Button */}
-          <motion.div
-            className="hidden md:block"
-            {...AnimationService.getFadeInAnimation(0.65)}
-          >
+          <div ref={ctaButtonRef} className="hidden md:block">
             <button
-              onClick={toggleTheme}
-              className={`p-3 rounded-full backdrop-blur-sm border transition-all duration-300 ${
-                isDark
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-gray-100 border-gray-300 text-gray-700"
-              }`}
-              aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+              onClick={() => {
+                const contactSection = document.getElementById("contact");
+                if (contactSection) {
+                  contactSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }
+              }}
+              className="relative bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-300 uppercase tracking-wide shadow-lg hover:shadow-cyan-500/25 group overflow-hidden"
+              style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
             >
-              {isDark ? (
-                <Sun size={20} className="text-yellow-300" />
-              ) : (
-                <Moon size={20} className="text-blue-600" />
-              )}
+              <span className="relative z-10">CONTACT US</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             </button>
-          </motion.div>
+          </div>
 
           {/* Mobile menu button */}
-          <motion.div
-            className="md:hidden"
-            {...AnimationService.getFadeInAnimation(0.7)}
-          >
+          <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className={`focus:outline-none ${
-                isDark ? "text-white" : "text-gray-700"
-              }`}
+              className="focus:outline-none text-white"
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-          </motion.div>
+          </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className={`md:hidden border-t transition-colors duration-300 ${
-              isDark
-                ? "bg-[#0A0F1B] border-gray-800"
-                : "bg-white border-gray-200"
-            }`}
-          >
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigationItems.map((item, index) => (
-                <motion.div
-                  key={item.name}
-                  {...AnimationService.getSlideInAnimation(
-                    "right",
-                    index * 0.1
-                  )}
-                >
-                  {item.name === "About" ? (
-                    <div>
-                      <button
-                        onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-                        className="w-full text-left px-3 py-2 text-base font-medium text-white flex items-center justify-between"
-                      >
-                        {item.name}
-                        <ChevronDown
-                          size={16}
-                          className={`transition-transform duration-200 ${
-                            aboutDropdownOpen ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      <AnimatePresence>
-                        {aboutDropdownOpen && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className={`ml-4 border-l transition-colors duration-300 ${
-                              isDark ? "border-gray-700" : "border-gray-300"
-                            }`}
-                          >
-                            {aboutDropdownItems.map(
-                              (dropdownItem, dropdownIndex) => (
-                                <motion.a
-                                  key={dropdownItem.name}
-                                  href={dropdownItem.href}
-                                  className={`block px-3 py-2 text-sm transition-colors duration-200 ${
-                                    isDark ? "text-gray-300" : "text-gray-600"
-                                  }`}
-                                  onClick={() => {
-                                    setAboutDropdownOpen(false);
-                                    closeMenu();
-                                  }}
-                                  {...AnimationService.getFadeInAnimation(
-                                    dropdownIndex * 0.1
-                                  )}
-                                >
-                                  {dropdownItem.name}
-                                </motion.a>
-                              )
-                            )}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : item.name === "Resource" ? (
-                    <div>
-                      <button
-                        onClick={() =>
-                          setResourceDropdownOpen(!resourceDropdownOpen)
-                        }
-                        className={`w-full text-left px-3 py-2 text-base font-medium flex items-center justify-between ${
-                          isDark ? "text-white" : "text-gray-700"
-                        }`}
-                      >
-                        {item.name}
-                        <ChevronDown
-                          size={16}
-                          className={`transition-transform duration-200 ${
-                            resourceDropdownOpen ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      <AnimatePresence>
-                        {resourceDropdownOpen && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className={`ml-4 border-l transition-colors duration-300 ${
-                              isDark ? "border-gray-700" : "border-gray-300"
-                            }`}
-                          >
-                            {resourceDropdownItems.map(
-                              (dropdownItem, dropdownIndex) => (
-                                <motion.a
-                                  key={dropdownItem.name}
-                                  href={dropdownItem.href}
-                                  className={`block px-3 py-2 text-sm transition-colors duration-200 ${
-                                    isDark ? "text-gray-300" : "text-gray-600"
-                                  }`}
-                                  onClick={() => {
-                                    setResourceDropdownOpen(false);
-                                    closeMenu();
-                                  }}
-                                  {...AnimationService.getFadeInAnimation(
-                                    dropdownIndex * 0.1
-                                  )}
-                                >
-                                  {dropdownItem.name}
-                                </motion.a>
-                              )
-                            )}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
+      {isOpen && (
+        <div
+          ref={mobileMenuRef}
+          className="md:hidden border-t transition-colors duration-300 bg-black/95 border-gray-800"
+        >
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            {navigationItems.map((item, index) => (
+              <div key={item.name}>
+                {item.name === "About" ? (
+                  <div>
                     <button
-                      onClick={() => {
-                        handleNavigation(item.href);
-                        closeMenu();
+                      onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
+                      className="w-full text-left px-3 py-2 text-base font-medium text-white flex items-center justify-between"
+                      style={{
+                        fontFamily: "system-ui, -apple-system, sans-serif",
                       }}
-                      className={`block w-full text-left px-3 py-2 text-base font-medium transition-colors duration-200 ${
-                        isDark
-                          ? `text-white ${
-                              activeItem === item.href.replace("#", "")
-                                ? "text-white bg-gray-800"
-                                : ""
-                            }`
-                          : `text-gray-700 ${
-                              activeItem === item.href.replace("#", "")
-                                ? "text-blue-600 bg-blue-50"
-                                : ""
-                            }`
-                      }`}
                     >
                       {item.name}
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform duration-200 ${
+                          aboutDropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
                     </button>
-                  )}
-                </motion.div>
-              ))}
-              <motion.button
-                className="w-full mt-4 bg-gradient-to-r from-[#4A90E2] to-[#1A50A0] text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 uppercase tracking-wide"
-                {...AnimationService.getSlideInAnimation("right", 0.6)}
-              >
-                CONTACT US
-              </motion.button>
-
-              {/* Mobile Theme Toggle */}
-              <motion.div
-                className="flex justify-center mt-4"
-                {...AnimationService.getSlideInAnimation("right", 0.7)}
-              >
-                <button
-                  onClick={toggleTheme}
-                  className={`p-3 rounded-full backdrop-blur-sm border transition-all duration-200 flex items-center gap-2 ${
-                    isDark
-                      ? "bg-white/10 border-white/20 text-white"
-                      : "bg-gray-100 border-gray-300 text-gray-700"
-                  }`}
-                  aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-                >
-                  {isDark ? (
-                    <>
-                      <Sun size={18} className="text-yellow-300" />
-                      <span className="text-sm">Light Mode</span>
-                    </>
-                  ) : (
-                    <>
-                      <Moon size={18} className="text-blue-600" />
-                      <span className="text-sm">Dark Mode</span>
-                    </>
-                  )}
-                </button>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                    {aboutDropdownOpen && (
+                      <div className="ml-4 border-l transition-colors duration-300 border-gray-700">
+                        {aboutDropdownItems.map(
+                          (dropdownItem, dropdownIndex) => (
+                            <a
+                              key={dropdownItem.name}
+                              href={dropdownItem.href}
+                              className="block px-3 py-2 text-sm transition-colors duration-200 text-gray-300"
+                              onClick={() => {
+                                setAboutDropdownOpen(false);
+                                closeMenu();
+                              }}
+                            >
+                              {dropdownItem.name}
+                            </a>
+                          )
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : item.name === "Resource" ? (
+                  <div>
+                    <button
+                      onClick={() =>
+                        setResourceDropdownOpen(!resourceDropdownOpen)
+                      }
+                      className="w-full text-left px-3 py-2 text-base font-medium flex items-center justify-between text-white"
+                      style={{
+                        fontFamily: "system-ui, -apple-system, sans-serif",
+                      }}
+                    >
+                      {item.name}
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform duration-200 ${
+                          resourceDropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {resourceDropdownOpen && (
+                      <div className="ml-4 border-l transition-colors duration-300 border-gray-700">
+                        {resourceDropdownItems.map(
+                          (dropdownItem, dropdownIndex) => (
+                            <a
+                              key={dropdownItem.name}
+                              href={dropdownItem.href}
+                              className="block px-3 py-2 text-sm transition-colors duration-200 text-gray-300"
+                              onClick={() => {
+                                setResourceDropdownOpen(false);
+                                closeMenu();
+                              }}
+                            >
+                              {dropdownItem.name}
+                            </a>
+                          )
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      handleNavigation(item.href);
+                      closeMenu();
+                    }}
+                    className={`block w-full text-left px-3 py-2 text-base font-medium transition-colors duration-200 ${
+                      activeItem === item.href.replace("#", "")
+                        ? "text-white bg-gray-800"
+                        : "text-white"
+                    }`}
+                    style={{
+                      fontFamily: "system-ui, -apple-system, sans-serif",
+                    }}
+                  >
+                    {item.name}
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              onClick={() => {
+                const contactSection = document.getElementById("contact");
+                if (contactSection) {
+                  contactSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }
+                closeMenu();
+              }}
+              className="w-full mt-4 bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 uppercase tracking-wide"
+              style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+            >
+              CONTACT US
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

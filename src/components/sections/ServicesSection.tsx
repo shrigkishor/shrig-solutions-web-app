@@ -1,12 +1,90 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { AnimationService } from "@/utils/animations";
+import { useGSAP } from "@/utils/gsapAnimations";
 import { useTheme } from "@/contexts/ThemeContext";
-import { ArrowRight, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const ServicesSection = () => {
   const { isDark } = useTheme();
+  const gsapAnimations = useGSAP();
+
+  // Refs for GSAP animations
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Register ScrollTrigger
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Create timeline for section animations
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Animate title
+      tl.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+      );
+
+      // Animate subtitle
+      tl.fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.4"
+      );
+
+      // Animate service cards with stagger
+      tl.fromTo(
+        servicesRef.current?.querySelectorAll(".service-card") || [],
+        { opacity: 0, y: 50, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        },
+        "-=0.2"
+      );
+
+      // Animate CTA section
+      tl.fromTo(
+        ctaRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.3"
+      );
+
+      // Hover animations for service cards
+      const serviceCards =
+        servicesRef.current?.querySelectorAll(".service-card") || [];
+      serviceCards.forEach((card) => {
+        const hoverAnimation = gsapAnimations.hoverScale(card, 1.05);
+        card.addEventListener("mouseenter", hoverAnimation.onMouseEnter);
+        card.addEventListener("mouseleave", hoverAnimation.onMouseLeave);
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [gsapAnimations]);
   const services = [
     {
       title: "Custom AI Development",
@@ -91,12 +169,9 @@ const ServicesSection = () => {
 
   return (
     <section
+      ref={sectionRef}
       id="services"
-      className={`relative py-24 overflow-hidden transition-all duration-700 ${
-        isDark
-          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
-          : "bg-gradient-to-br from-gray-50 via-white to-blue-50"
-      }`}
+      className="relative py-24 overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
@@ -132,71 +207,52 @@ const ServicesSection = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          className="text-center mb-20"
-          {...AnimationService.getFadeInAnimation()}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-6"
-          >
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
             <Zap className="w-4 h-4" />
             Our Services
-          </motion.div>
+          </div>
 
-          <motion.h2
+          <h2
+            ref={titleRef}
             className={`text-5xl md:text-6xl font-bold font-poppins mb-6 transition-all duration-500 ${
               isDark ? "text-white" : "text-gray-900"
             }`}
-            {...AnimationService.getSlideInAnimation("up")}
           >
             Your technology{" "}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               partner
             </span>{" "}
             for
-          </motion.h2>
+          </h2>
 
-          <motion.h3
-            className="text-5xl md:text-6xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text font-poppins mb-8"
-            {...AnimationService.getSlideInAnimation("up", 0.1)}
-          >
+          <h3 className="text-5xl md:text-6xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text font-poppins mb-8">
             Seamless Project Execution
-          </motion.h3>
+          </h3>
 
-          <motion.p
+          <p
+            ref={subtitleRef}
             className={`text-xl md:text-2xl max-w-3xl mx-auto font-inter leading-relaxed mb-10 transition-all duration-500 ${
               isDark ? "text-gray-300" : "text-gray-600"
             }`}
-            {...AnimationService.getSlideInAnimation("up", 0.2)}
           >
             We deliver cutting-edge solutions that drive innovation and
             accelerate your business growth
-          </motion.p>
+          </p>
 
-          <motion.button
-            className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-4 rounded-full font-bold text-lg transition-all duration-500 transform hover:scale-105 flex items-center gap-3 mx-auto shadow-2xl hover:shadow-blue-500/25"
-            {...AnimationService.getSlideInAnimation("up", 0.3)}
-          >
-            <span>Let's talk</span>
+          <button className="group relative bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-10 py-4 rounded-full font-bold text-lg transition-all duration-500 transform hover:scale-105 flex items-center gap-3 mx-auto shadow-2xl hover:shadow-blue-500/25">
+            <span>Let&apos;s talk</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+        <div
+          ref={servicesRef}
+          className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8"
+        >
           {services.map((service, index) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="group"
-            >
+            <div key={index} className="service-card group">
               <div
                 className={`relative rounded-3xl p-8 h-full transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
                   isDark
@@ -244,7 +300,7 @@ const ServicesSection = () => {
                   />
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

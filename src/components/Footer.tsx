@@ -33,11 +33,7 @@ const Footer = () => {
   };
 
   return (
-    <footer
-      className={`transition-colors duration-300 ${
-        isDark ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
-      }`}
-    >
+    <footer className="relative text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-8">
           {/* Company Info */}
@@ -48,7 +44,11 @@ const Footer = () => {
                   isDark ? "text-white" : "text-gray-900"
                 }`}
               >
-                <ShrigLogo className="h-10 w-auto" alt="Shrig Solutions" isDark={isDark} />
+                <ShrigLogo
+                  className="h-10 w-auto"
+                  alt="Shrig Solutions"
+                  isDark={isDark}
+                />
               </div>
             </div>
             <p

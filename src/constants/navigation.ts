@@ -6,7 +6,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   { name: "Services", href: "#services" },
   { name: "Team", href: "#team" },
   { name: "Resource", href: "#resource" },
-  { name: "Contact", href: "#contact" },
 ];
 
 export const MOBILE_BREAKPOINT = 768;

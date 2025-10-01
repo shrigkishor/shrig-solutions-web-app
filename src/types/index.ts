@@ -41,7 +41,7 @@ export interface Service extends BaseEntity {
   image: string;
 }
 
-export type ServiceColor = 'blue' | 'green' | 'purple' | 'orange';
+export type ServiceColor = "blue" | "green" | "purple" | "orange";
 
 // Case Studies domain
 export interface CaseStudy extends BaseEntity {
@@ -93,15 +93,17 @@ export interface CarModel {
   description: string;
   features: string[];
   image: string;
-  category: 'electric' | 'autonomous' | 'connected' | 'hybrid';
+  category: "electric" | "autonomous" | "connected" | "hybrid";
 }
 
 // Animation and UI types
-export interface AnimationConfig {
-  initial: object;
-  animate: object;
-  exit?: object;
-  transition?: object;
+export interface GSAPAnimationConfig {
+  duration?: number;
+  ease?: string;
+  delay?: number;
+  stagger?: number;
+  repeat?: number;
+  yoyo?: boolean;
 }
 
 export interface ThemeConfig {
@@ -153,7 +155,7 @@ export interface SectionProps extends BaseComponentProps {
   id: string;
   title: string;
   subtitle?: string;
-  background?: 'light' | 'dark' | 'gradient';
+  background?: "light" | "dark" | "gradient";
 }
 
 // Event types

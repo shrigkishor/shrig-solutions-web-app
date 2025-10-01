@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import ScrollToTop from "@/components/ui/ScrollToTop";
+import DraggableThemeToggle from "@/components/ui/DraggableThemeToggle";
 import "./globals.css";
 
 const inter = Inter({
@@ -56,7 +58,11 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={`${inter.variable} ${poppins.variable} antialiased`}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <ScrollToTop />
+          <DraggableThemeToggle />
+        </ThemeProvider>
       </body>
     </html>
   );
