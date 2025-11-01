@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({
       );
 
       // Hover animations
-      let hoverAnimation: any = null;
+      let hoverAnimation: { onMouseEnter: () => void; onMouseLeave: () => void } | null = null;
       if (hover && cardRef.current) {
         hoverAnimation = gsapAnimations.hoverScale(cardRef.current, 1.02);
         cardRef.current.addEventListener(

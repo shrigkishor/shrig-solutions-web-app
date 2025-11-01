@@ -5,7 +5,7 @@ interface ValidationRules {
   [key: string]: ValidationRule;
 }
 
-export const useFormValidation = <T extends Record<string, any>>(
+export const useFormValidation = <T extends Record<string, unknown>>(
   initialData: T,
   validationRules: ValidationRules
 ) => {
@@ -13,23 +13,23 @@ export const useFormValidation = <T extends Record<string, any>>(
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [isValid, setIsValid] = useState(false);
 
-  const validateField = useCallback((field: string, value: any): ValidationError | null => {
+  const validateField = useCallback((field: string, value: unknown): ValidationError | null => {
     const rule = validationRules[field];
     if (!rule) return null;
 
-    if (rule.required && !value) {
+    if (rule.required && (value === null || value === undefined || (typeof value === 'string' && value.trim() === ''))) {
       return { field, message: `${field} is required` };
     }
 
-    if (rule.minLength && value && value.length < rule.minLength) {
+    if (rule.minLength && typeof value === 'string' && value.length < rule.minLength) {
       return { field, message: `${field} must be at least ${rule.minLength} characters` };
     }
 
-    if (rule.maxLength && value && value.length > rule.maxLength) {
+    if (rule.maxLength && typeof value === 'string' && value.length > rule.maxLength) {
       return { field, message: `${field} must be no more than ${rule.maxLength} characters` };
     }
 
-    if (rule.pattern && value && !rule.pattern.test(value)) {
+    if (rule.pattern && typeof value === 'string' && !rule.pattern.test(value)) {
       return { field, message: `${field} format is invalid` };
     }
 
@@ -55,7 +55,7 @@ export const useFormValidation = <T extends Record<string, any>>(
     return newErrors.length === 0;
   }, [data, validationRules, validateField]);
 
-  const updateField = useCallback((field: keyof T, value: any) => {
+  const updateField = useCallback((field: keyof T, value: unknown) => {
     setData(prev => ({ ...prev, [field]: value }));
     
     // Clear field error when user starts typing

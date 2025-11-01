@@ -2,14 +2,26 @@ import { ApiResponse, PaginatedResponse, ContactForm } from '@/types';
 
 export interface IApiService {
   get<T>(endpoint: string): Promise<ApiResponse<T>>;
-  post<T>(endpoint: string, data: any): Promise<ApiResponse<T>>;
-  put<T>(endpoint: string, data: any): Promise<ApiResponse<T>>;
+  post<T>(endpoint: string, data: unknown): Promise<ApiResponse<T>>;
+  put<T>(endpoint: string, data: unknown): Promise<ApiResponse<T>>;
   delete<T>(endpoint: string): Promise<ApiResponse<T>>;
+}
+
+export interface ContactInfo {
+  email: string;
+  phone: string;
+  address: string;
+  socialMedia: {
+    linkedin: string;
+    github: string;
+    facebook: string;
+    instagram: string;
+  };
 }
 
 export interface IContactService {
   submitContactForm(form: ContactForm): Promise<ApiResponse<{ success: boolean }>>;
-  getContactInfo(): Promise<ApiResponse<any>>;
+  getContactInfo(): Promise<ApiResponse<ContactInfo>>;
 }
 
 export class ApiService implements IApiService {
@@ -42,7 +54,7 @@ export class ApiService implements IApiService {
     }
   }
 
-  async post<T>(endpoint: string, data: any): Promise<ApiResponse<T>> {
+  async post<T>(endpoint: string, data: unknown): Promise<ApiResponse<T>> {
     try {
       const response = await fetch(`${this.baseUrl}${endpoint}`, {
         method: 'POST',
@@ -72,7 +84,7 @@ export class ApiService implements IApiService {
     }
   }
 
-  async put<T>(endpoint: string, data: any): Promise<ApiResponse<T>> {
+  async put<T>(endpoint: string, data: unknown): Promise<ApiResponse<T>> {
     try {
       const response = await fetch(`${this.baseUrl}${endpoint}`, {
         method: 'PUT',
@@ -140,8 +152,8 @@ export class ContactService implements IContactService {
     return this.apiService.post<{ success: boolean }>('/contact', form);
   }
 
-  async getContactInfo(): Promise<ApiResponse<any>> {
-    return this.apiService.get<any>('/contact-info');
+  async getContactInfo(): Promise<ApiResponse<ContactInfo>> {
+    return this.apiService.get<ContactInfo>('/contact-info');
   }
 }
 

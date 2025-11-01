@@ -44,7 +44,7 @@ const Button: React.FC<ButtonProps> = ({
       );
 
       // Hover animations
-      let hoverAnimation: any = null;
+      let hoverAnimation: { onMouseEnter: () => void; onMouseLeave: () => void } | null = null;
       if (buttonRef.current) {
         hoverAnimation = gsapAnimations.buttonHover(buttonRef.current);
         buttonRef.current.addEventListener(

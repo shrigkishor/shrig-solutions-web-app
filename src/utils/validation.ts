@@ -11,8 +11,11 @@ export class ValidationService {
     return phoneRegex.test(phone);
   }
 
-  static validateRequired(value: any): boolean {
-    return value !== null && value !== undefined && value.toString().trim() !== '';
+  static validateRequired(value: unknown): boolean {
+    if (value === null || value === undefined) return false;
+    if (typeof value === 'string') return value.trim() !== '';
+    if (typeof value === 'number' || typeof value === 'boolean') return true;
+    return String(value).trim() !== '';
   }
 
   static validateMinLength(value: string, minLength: number): boolean {
@@ -27,20 +30,20 @@ export class ValidationService {
     return pattern.test(value);
   }
 
-  static validateField(field: string, value: any, rule: ValidationRule): ValidationError | null {
+  static validateField(field: string, value: unknown, rule: ValidationRule): ValidationError | null {
     if (rule.required && !this.validateRequired(value)) {
       return { field, message: `${field} is required` };
     }
 
-    if (rule.minLength && value && !this.validateMinLength(value, rule.minLength)) {
+    if (rule.minLength && typeof value === 'string' && !this.validateMinLength(value, rule.minLength)) {
       return { field, message: `${field} must be at least ${rule.minLength} characters` };
     }
 
-    if (rule.maxLength && value && !this.validateMaxLength(value, rule.maxLength)) {
+    if (rule.maxLength && typeof value === 'string' && !this.validateMaxLength(value, rule.maxLength)) {
       return { field, message: `${field} must be no more than ${rule.maxLength} characters` };
     }
 
-    if (rule.pattern && value && !this.validatePattern(value, rule.pattern)) {
+    if (rule.pattern && typeof value === 'string' && !this.validatePattern(value, rule.pattern)) {
       return { field, message: `${field} format is invalid` };
     }
 

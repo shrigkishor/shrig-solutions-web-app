@@ -45,7 +45,7 @@ export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
   return { elementRef, isVisible };
 };
 
-export const useStaggeredAnimation = (items: any[], delay: number = 0.1) => {
+export const useStaggeredAnimation = <T,>(items: T[], delay: number = 0.1) => {
   const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
 
   const addVisibleItem = (index: number) => {

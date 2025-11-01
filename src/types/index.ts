@@ -137,7 +137,7 @@ export interface ValidationRule {
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;
-  custom?: (value: any) => boolean;
+  custom?: (value: unknown) => boolean;
 }
 
 export interface ValidationError {

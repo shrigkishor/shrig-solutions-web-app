@@ -13,7 +13,7 @@ export const useScrollAnimations = () => {
 
     const ctx = gsap.context(() => {
       // Fade in animation for sections
-      gsap.utils.toArray(".fade-in-section").forEach((section: any) => {
+      gsap.utils.toArray<HTMLElement>(".fade-in-section").forEach((section) => {
         gsap.fromTo(
           section,
           { opacity: 0, y: 50 },
@@ -33,7 +33,7 @@ export const useScrollAnimations = () => {
       });
 
       // Slide in from left
-      gsap.utils.toArray(".slide-in-left").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".slide-in-left").forEach((element) => {
         gsap.fromTo(
           element,
           { opacity: 0, x: -100 },
@@ -53,7 +53,7 @@ export const useScrollAnimations = () => {
       });
 
       // Slide in from right
-      gsap.utils.toArray(".slide-in-right").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".slide-in-right").forEach((element) => {
         gsap.fromTo(
           element,
           { opacity: 0, x: 100 },
@@ -73,7 +73,7 @@ export const useScrollAnimations = () => {
       });
 
       // Scale in animation
-      gsap.utils.toArray(".scale-in").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".scale-in").forEach((element) => {
         gsap.fromTo(
           element,
           { opacity: 0, scale: 0.8 },
@@ -93,7 +93,7 @@ export const useScrollAnimations = () => {
       });
 
       // Stagger animation for lists
-      gsap.utils.toArray(".stagger-animation").forEach((container: any) => {
+      gsap.utils.toArray<HTMLElement>(".stagger-animation").forEach((container) => {
         const children = container.children;
         gsap.fromTo(
           children,
@@ -115,7 +115,7 @@ export const useScrollAnimations = () => {
       });
 
       // Parallax effect for background elements
-      gsap.utils.toArray(".parallax-bg").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".parallax-bg").forEach((element) => {
         gsap.to(element, {
           yPercent: -50,
           ease: "none",
@@ -129,7 +129,7 @@ export const useScrollAnimations = () => {
       });
 
       // Text reveal animation
-      gsap.utils.toArray(".text-reveal").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".text-reveal").forEach((element) => {
         const text = element.textContent;
         element.textContent = "";
 
@@ -158,7 +158,7 @@ export const useScrollAnimations = () => {
       });
 
       // Counter animation
-      gsap.utils.toArray(".counter-animation").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".counter-animation").forEach((element) => {
         const endValue = parseInt(element.getAttribute("data-count") || "0");
 
         gsap.fromTo(
@@ -180,7 +180,8 @@ export const useScrollAnimations = () => {
                   ease: "power2.out",
                   snap: { innerHTML: 1 },
                   onUpdate: function () {
-                    element.innerHTML = Math.ceil(this.targets()[0].innerHTML);
+                    const currentValue = this.targets()[0].innerHTML;
+                    element.innerHTML = String(Math.ceil(Number(currentValue)));
                   },
                 });
               },
@@ -190,7 +191,7 @@ export const useScrollAnimations = () => {
       });
 
       // Progress bar animation
-      gsap.utils.toArray(".progress-bar").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".progress-bar").forEach((element) => {
         const progress = element.querySelector(".progress-fill");
         const percentage = element.getAttribute("data-percentage") || "0";
 
@@ -212,7 +213,7 @@ export const useScrollAnimations = () => {
       });
 
       // Image reveal animation
-      gsap.utils.toArray(".image-reveal").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".image-reveal").forEach((element) => {
         gsap.fromTo(
           element,
           { opacity: 0, scale: 1.1 },
@@ -232,7 +233,7 @@ export const useScrollAnimations = () => {
       });
 
       // Floating animation for decorative elements
-      gsap.utils.toArray(".float-animation").forEach((element: any) => {
+      gsap.utils.toArray<HTMLElement>(".float-animation").forEach((element) => {
         gsap.to(element, {
           y: -20,
           duration: 2,
