@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Car, Zap, Shield, Wifi } from "lucide-react";
 
 const CarShowcaseSection = () => {
@@ -48,9 +49,11 @@ const CarShowcaseSection = () => {
           {/* Car Image */}
           <div className="relative">
             <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-8">
-              <img
+              <Image
                 src="/images/cars/tech-car.svg"
                 alt="Technology Car"
+                width={400}
+                height={400}
                 className="w-full h-auto"
               />
             </div>
@@ -62,7 +65,7 @@ const CarShowcaseSection = () => {
 
           {/* Features */}
           <div className="space-y-8">
-            {carFeatures.map((feature, index) => (
+            {carFeatures.map((feature) => (
               <div key={feature.title} className="flex items-start space-x-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
                   <feature.icon className="w-6 h-6 text-white" />

@@ -132,7 +132,7 @@ const PartnershipSection = () => {
 
             {/* Benefits */}
             <div className="space-y-6">
-              {benefits.map((benefit, index) => (
+              {benefits.map((benefit) => (
                 <div key={benefit.title} className="flex items-start space-x-4">
                   <div
                     className={`flex-shrink-0 w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-xl flex items-center justify-center shadow-lg`}
@@ -237,7 +237,7 @@ const PartnershipSection = () => {
               label: "Client Satisfaction",
               gradient: "from-green-500 to-emerald-500",
             },
-          ].map((stat, index) => (
+          ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div
                 className={`relative rounded-3xl p-8 transition-all duration-500 hover:scale-105 ${

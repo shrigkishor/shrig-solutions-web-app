@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowRight, Star } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -53,7 +54,7 @@ const SuccessStoriesSection = () => {
 
         {/* Case Studies Grid */}
         <div className="grid lg:grid-cols-2 gap-12">
-          {caseStudies.map((study, index) => (
+          {caseStudies.map((study) => (
             <div key={study.title} className="group">
               <div
                 className={`rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 ${
@@ -64,10 +65,11 @@ const SuccessStoriesSection = () => {
               >
                 {/* Image */}
                 <div className="h-64 relative overflow-hidden">
-                  <img
+                  <Image
                     src={`/images/media/${study.title.toLowerCase()}-app.svg`}
                     alt={study.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                   <div
                     className={`absolute inset-0 transition-all duration-500 ${

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   Linkedin,
   Github,
@@ -87,7 +88,7 @@ const TeamSection = () => {
 
         {/* Team Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-20">
-          {teamMembers.map((member, index) => (
+          {teamMembers.map((member) => (
             <div key={member.name} className="group">
               <div
                 className={`relative rounded-2xl overflow-hidden transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
@@ -98,15 +99,11 @@ const TeamSection = () => {
               >
                 {/* Background Image */}
                 <div className="relative w-full h-48">
-                  <img
+                  <Image
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = "none";
-                      target.nextElementSibling?.classList.remove("hidden");
-                    }}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${member.gradient} flex items-center justify-center text-white text-4xl font-bold hidden`}
@@ -159,7 +156,7 @@ const TeamSection = () => {
                   {/* Skills */}
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-2 justify-center">
-                      {member.skills.slice(0, 2).map((skill, skillIndex) => (
+                      {member.skills.slice(0, 2).map((skill) => (
                         <span
                           key={skill}
                           className={`px-2 py-1 rounded-full text-xs font-medium transition-all duration-500 ${
@@ -238,7 +235,7 @@ const TeamSection = () => {
               { number: "7", label: "Expertise Areas", icon: Sparkles },
               { number: "50+", label: "Years Combined", icon: ArrowRight },
               { number: "100%", label: "Dedication", icon: Users },
-            ].map((stat, index) => (
+            ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div
                   className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center transition-all duration-500 ${

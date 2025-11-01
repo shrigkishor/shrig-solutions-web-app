@@ -196,7 +196,7 @@ const AboutSection = () => {
           <div className="space-y-10">
             {/* Features */}
             <div ref={featuresRef} className="space-y-8">
-              {features.map((feature, index) => (
+              {features.map((feature) => (
                 <div
                   key={feature.title}
                   className="feature-card group relative"

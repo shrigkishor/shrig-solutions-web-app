@@ -1,4 +1,4 @@
-import { ApiResponse, PaginatedResponse, ContactForm } from '@/types';
+import { ApiResponse, ContactForm } from '@/types';
 
 export interface IApiService {
   get<T>(endpoint: string): Promise<ApiResponse<T>>;

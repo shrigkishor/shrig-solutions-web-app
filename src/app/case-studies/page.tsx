@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Card from "@/components/ui/Card";
@@ -84,15 +85,12 @@ const CaseStudiesPage = () => {
               <div className="relative">
                 {/* Project Image */}
                 <div className="aspect-video bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-lg mb-6 flex items-center justify-center">
-                  <img
+                  <Image
                     src={study.image}
                     alt={study.title}
-                    className="w-24 h-24 object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = "none";
-                      target.nextElementSibling!.classList.remove("hidden");
-                    }}
+                    width={96}
+                    height={96}
+                    className="object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                   />
                   <div className="hidden text-6xl opacity-60 group-hover:opacity-80 transition-opacity duration-300">
                     {study.title === "AquaBuildr" && "🐠"}

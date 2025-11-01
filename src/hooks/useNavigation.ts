@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { NavigationState, NavigationItem } from "@/types";
+import { NavigationState } from "@/types";
 import { NAVIGATION_ITEMS, MOBILE_BREAKPOINT } from "@/constants/navigation";
 
 export const useNavigation = () => {
@@ -20,16 +20,6 @@ export const useNavigation = () => {
     setState((prev) => ({ ...prev, activeItem: item }));
   }, []);
 
-  const scrollToSection = useCallback((href: string) => {
-    const targetId = href.replace("#", "");
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }, []);
 
   const handleScroll = useCallback(() => {
     const sections = NAVIGATION_ITEMS.map((item) => item.href.replace("#", ""));
@@ -42,7 +32,7 @@ export const useNavigation = () => {
       const section = sections[i];
       const element = document.getElementById(section);
       if (element) {
-        const { offsetTop, offsetHeight } = element;
+        const { offsetTop } = element;
         if (scrollPosition >= offsetTop) {
           activeSection = section;
           break;

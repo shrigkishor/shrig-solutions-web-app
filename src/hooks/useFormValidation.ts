@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ValidationRule, ValidationError, ContactForm } from '@/types';
+import { ValidationRule, ValidationError } from '@/types';
 
 interface ValidationRules {
   [key: string]: ValidationRule;

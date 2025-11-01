@@ -271,7 +271,7 @@ const Navigation = () => {
           {/* Desktop Menu */}
           <div className="hidden md:block">
             <div ref={menuItemsRef} className="flex items-center space-x-8">
-              {navigationItems.map((item, index) => (
+              {navigationItems.map((item) => (
                 <div key={item.name} className="relative">
                   {item.name === "About" ? (
                     <div className="relative" ref={dropdownRef}>
@@ -300,7 +300,7 @@ const Navigation = () => {
                         <div className="dropdown-menu absolute top-full left-0 mt-2 w-48 border rounded-md shadow-lg z-50 transition-colors duration-300 bg-black border-gray-800">
                           <div className="py-2">
                             {aboutDropdownItems.map(
-                              (dropdownItem, dropdownIndex) => (
+                              (dropdownItem) => (
                                 <a
                                   key={dropdownItem.name}
                                   href={dropdownItem.href}
@@ -344,7 +344,7 @@ const Navigation = () => {
                         <div className="dropdown-menu absolute top-full left-0 mt-2 w-48 border rounded-md shadow-lg z-50 transition-colors duration-300 bg-black border-gray-800">
                           <div className="py-2">
                             {resourceDropdownItems.map(
-                              (dropdownItem, dropdownIndex) => (
+                              (dropdownItem) => (
                                 <a
                                   key={dropdownItem.name}
                                   href={dropdownItem.href}
@@ -428,7 +428,7 @@ const Navigation = () => {
           className="md:hidden border-t transition-colors duration-300 bg-black/95 border-gray-800"
         >
           <div className="px-2 pt-2 pb-3 space-y-1">
-            {navigationItems.map((item, index) => (
+            {navigationItems.map((item) => (
               <div key={item.name}>
                 {item.name === "About" ? (
                   <div>
@@ -450,7 +450,7 @@ const Navigation = () => {
                     {aboutDropdownOpen && (
                       <div className="ml-4 border-l transition-colors duration-300 border-gray-700">
                         {aboutDropdownItems.map(
-                          (dropdownItem, dropdownIndex) => (
+                          (dropdownItem) => (
                             <a
                               key={dropdownItem.name}
                               href={dropdownItem.href}
@@ -489,7 +489,7 @@ const Navigation = () => {
                     {resourceDropdownOpen && (
                       <div className="ml-4 border-l transition-colors duration-300 border-gray-700">
                         {resourceDropdownItems.map(
-                          (dropdownItem, dropdownIndex) => (
+                          (dropdownItem) => (
                             <a
                               key={dropdownItem.name}
                               href={dropdownItem.href}
